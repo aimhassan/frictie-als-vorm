@@ -1,0 +1,693 @@
+/* Prototype 1 v3: Scrollverhaal als kapotte feed */
+
+/*
+  COLOR SYSTEM — v3
+  -----------------
+  Concept: the system retains data after stripping the human signal.
+  What it keeps is not red (danger) or cyan (hacker). It keeps residue.
+  The color of a thermal print that has been in a drawer too long.
+  Phosphor amber — not neon, not warning, not hostile. Just: degraded.
+
+  All ghost segments share ONE color. The system is indifferent to content.
+  It processed your voice-note the same way it processed the algorithm critique.
+  Color variation per segment was conceptually wrong. Uniform residue is correct.
+
+  Ghost amber: #b5a07a — low saturation, warm, archival. The color of data
+  that was retained but not maintained. Derived from phosphor decay and
+  thermal fax paper, not from terminal emulators.
+
+  Dissolved ground: #0d0c0b — near-black with a warm undertone.
+  Not pure black (#000) or cold charcoal (#0a0a0a). The warmth makes
+  the amber ghost text feel deposited, not projected.
+
+  Progress bar: corrected Instagram gradient (from #f09433 to #bc1888),
+  not the blue-shifted version. The cheerful gradient against the dying
+  page is the intended dissonance — but it should be precise parody.
+  The gradient loses opacity as dissolution progresses (handled in JS,
+  class .bar-fading below).
+
+  Nav: stays white the entire time. Platform chrome is immune.
+  Only what you said is at risk. When glitching starts, only the
+  Volgend tab text corrupts — handled in JS.
+
+  TYPOGRAPHY — v3
+  ---------------
+  DM Sans (body): humanist sans, warm humanist details in lowercase.
+  Reads as "written by a person" — necessary before the machine erases it.
+  IBM Plex Mono (terminal): institutional, corporate origin. Not a
+  developer tool (JetBrains) or a design trend (Space Mono). The name
+  alone carries meaning: a machine that belongs to an organization.
+*/
+
+:root {
+  --ghost: #b5a07a;
+  --ghost-border: #8a7a5a;
+  --ground-dissolved: #0d0c0b;
+  --ground-dissolved-border: #1e1c19;
+  --platform-bg: #ffffff;
+  --platform-border: #dbdbdb;
+  --platform-text: #262626;
+  --ig-gradient: linear-gradient(
+    90deg,
+    #f09433 0%,
+    #e6683c 25%,
+    #dc2743 50%,
+    #cc2366 75%,
+    #bc1888 100%
+  );
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #fafafa;
+  color: #262626;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ---- PLATFORM NAV ---- */
+.platform-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: #fff;
+  border-bottom: 1px solid #dbdbdb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 100;
+  /* Nav stays white. No background transition. Chrome is immune. */
+}
+
+/* Volgend tab corrupts when glitching — handled in JS.
+   The nav background never changes. Only what you said is at risk. */
+.platform-nav.glitching #tabVolgend {
+  color: var(--ghost);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.nav-left {
+  width: 80px; /* balance the right side */
+}
+
+.nav-center {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-tab {
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(38, 38, 38, 0.45);
+  cursor: pointer;
+  padding: 4px 0;
+  position: relative;
+  font-family: 'DM Sans', inherit;
+  transition: color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-tab-active {
+  color: #262626;
+  font-weight: 700;
+}
+
+.nav-tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #262626;
+  border-radius: 2px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 80px;
+  justify-content: flex-end;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #262626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-btn:hover {
+  opacity: 0.6;
+}
+
+/* ---- PROGRESS BAR ---- */
+.progress-container {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #eee;
+  z-index: 99;
+  transition: background 0.5s ease;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--ig-gradient);
+  transition: width 0.4s ease, opacity 1s ease;
+}
+
+/* When >50% gone, the cheerful gradient loses the ability to perform.
+   Not replaced — just spent. This is the parody becoming honest. */
+.progress-bar.bar-fading {
+  opacity: 0.35;
+}
+
+.progress-label {
+  position: fixed;
+  top: 52px;
+  right: 16px;
+  font-size: 0.65rem;
+  color: #999;
+  font-family: 'IBM Plex Mono', monospace;
+  z-index: 99;
+  transition: color 0.5s ease;
+}
+
+/* ---- INTRO ---- */
+.intro {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 24px 40px;
+  background: #fff;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.intro-inner {
+  max-width: 520px;
+  width: 100%;
+  /* Left-aligned — like a real post caption, not a landing page headline */
+  text-align: left;
+}
+
+.intro-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #8e8e8e;
+  margin-bottom: 10px;
+}
+
+/* CSS avatar circle — Instagram gradient ring, recognizable before anything breaks */
+.intro-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ig-gradient);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.intro-author {
+  font-weight: 600;
+  color: #262626;
+}
+
+.intro-dot {
+  color: #ccc;
+}
+
+/* Caption styled like a real social media post — DM Sans at reading size,
+   truncated to 2-3 lines exactly like a platform caption preview */
+.intro-caption {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #262626;
+  letter-spacing: -0.012em;
+  margin-bottom: 4px;
+}
+
+.intro-more {
+  margin-bottom: 0;
+}
+
+.intro-more-link {
+  font-size: 0.85rem;
+  color: #8e8e8e;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.intro-more-link:hover {
+  color: #444;
+}
+
+.scroll-indicator {
+  color: #ccc;
+  margin-top: auto;
+  padding-bottom: 24px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.3; }
+  50% { transform: translateY(8px); opacity: 0.6; }
+}
+
+/* ---- STORY SEGMENTS ---- */
+#story {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 16px 10vh;
+}
+
+.segment {
+  position: relative;
+  padding: 32px 0;
+  border-bottom: 1px solid #efefef;
+}
+
+.segment-content {
+  transition: opacity 0.8s ease, filter 0.8s ease;
+  position: relative;
+}
+
+.segment-content p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #262626;
+  font-optical-sizing: auto;
+  /* Structural friction: imperceptible tightness built into the base state.
+     When ghost data appears at letter-spacing: 0.04em, the shift is felt. */
+  letter-spacing: -0.012em;
+}
+
+/* ---- ENGAGEMENT UI ---- */
+.segment-ui {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+  padding-top: 8px;
+}
+
+.segment-ui button {
+  background: none;
+  border: none;
+  color: #262626;
+  cursor: pointer;
+  padding: 4px;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.segment-ui button:hover {
+  opacity: 0.6;
+}
+
+.segment-ui button:active {
+  transform: scale(0.92);
+}
+
+/* Bookmark pushed to right — same as Instagram layout */
+.ui-save {
+  margin-left: auto;
+}
+
+/* Heart: fill + stroke both turn red on like */
+.ui-heart.liked svg {
+  fill: #ed4956;
+  stroke: #ed4956;
+}
+
+.heart-count {
+  font-size: 0.78rem;
+  color: #8e8e8e;
+  min-width: 12px;
+}
+
+/* Error state: hide SVG, show text label */
+.ui-err {
+  display: none;
+  font-size: 0.7rem;
+}
+
+.ui-comment.comment-failed svg,
+.ui-share.share-failed svg,
+.ui-save.save-failed svg {
+  display: none;
+}
+
+/* Permanent failure. Same amber as ghost: the UI failed the same way the content failed. */
+.ui-comment.comment-failed,
+.ui-share.share-failed,
+.ui-save.save-failed {
+  cursor: default;
+  pointer-events: none;
+  color: var(--ghost);
+}
+
+.ui-comment.comment-failed .ui-err,
+.ui-share.share-failed .ui-err,
+.ui-save.save-failed .ui-err {
+  display: inline;
+}
+
+/* ---- DISSOLVING ---- */
+.segment.dissolving .segment-content {
+  opacity: 0.2;
+  filter: blur(2px);
+}
+
+.segment.dissolving .segment-ui {
+  opacity: 0.2;
+}
+
+/* ---- SCRAMBLING ---- */
+.segment.scrambling .segment-content p {
+  font-family: 'IBM Plex Mono', monospace;
+  color: #999;
+  letter-spacing: 0.03em;
+}
+
+.segment.scrambling .segment-content p.glitch-text {
+  overflow: hidden;
+}
+
+/* ---- DISSOLVED ---- */
+.segment.dissolved .segment-content {
+  display: none;
+}
+
+.segment.dissolved .segment-ui {
+  display: none;
+}
+
+.segment.dissolved .segment-ghost {
+  display: block;
+}
+
+.segment.dissolved {
+  border-bottom-color: var(--ground-dissolved-border);
+  background: var(--ground-dissolved);
+  margin-left: -16px;
+  margin-right: -16px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Ghost data — one color, all segments. Thinner border (1px, not 2px):
+   trace, not marking. Opacity-only appear: data doesn't slide in, it just exists. */
+.segment-ghost {
+  display: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--ghost);
+  padding: 16px 0 16px 12px;
+  border-left: 1px solid var(--ghost-border);
+  position: relative;
+  white-space: pre-wrap;
+  letter-spacing: 0.01em;
+  animation: ghost-appear 0.5s ease-out;
+}
+
+/* Opacity-only: platform data doesn't arrive dramatically, it just exists. */
+@keyframes ghost-appear {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Segment 6 (moeder): same color, but slightly more visible.
+   The system is indifferent — but there was more to lose here. */
+.segment[data-segment="6"] .segment-ghost {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+/* Final segment: the system has run out of its own language.
+   Pure black. Body font. White at very low opacity. No border.
+   The machine drops its technical register and just states it plainly. */
+.segment[data-segment="9"].dissolved {
+  background: #000;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.segment[data-segment="9"].dissolved .segment-ghost {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.32);
+  text-align: center;
+  padding: 48px 24px;
+  border-left: none;
+  line-height: 2.4;
+  letter-spacing: 0.02em;
+  animation: final-appear 2.5s ease-out;
+}
+
+@keyframes final-appear {
+  0%   { opacity: 0; }
+  55%  { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Laatste segment */
+.segment-final .segment-content p {
+  font-weight: 600;
+}
+
+/* ---- FOOTER ---- */
+#footer {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+  text-align: center;
+}
+
+.footer-stats {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: #8e8e8e;
+  margin-bottom: 24px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.stat-num {
+  color: var(--ghost);
+  font-weight: 700;
+}
+
+.stat-sep {
+  color: #ddd;
+}
+
+.footer-system {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  color: #444;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.credit {
+  font-size: 0.75rem;
+  color: #8e8e8e;
+  line-height: 1.8;
+}
+
+.credit-sub {
+  font-size: 0.65rem;
+  color: #bbb;
+}
+
+/* ---- GLITCH FLASH ---- */
+.glitch-flash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 998;
+  animation: flash 0.12s ease-out forwards;
+}
+
+@keyframes flash {
+  0%   { background: rgba(181, 160, 122, 0.10); }
+  50%  { background: rgba(13, 12, 11, 0.03); }
+  100% { background: transparent; }
+}
+
+/* ---- PROGRESSIVE DARKENING ---- */
+body.darkening {
+  transition: background 2s ease;
+}
+
+body[data-dark="2"] { background: #efeeec; }
+body[data-dark="3"] { background: #dedad6; }
+body[data-dark="4"] { background: #403e3b; transition: background 1.5s ease; }
+body[data-dark="5"] { background: #282622; }
+body[data-dark="6"] { background: #18160f; }
+body[data-dark="7"] { background: #100e0a; }
+body[data-dark="8"],
+body[data-dark="9"],
+body[data-dark="10"] { background: #0d0c0b; }
+
+body.darkening .segment:not(.dissolved) .segment-content p {
+  transition: color 1.5s ease;
+}
+
+body[data-dark="4"] .segment:not(.dissolved) .segment-content p,
+body[data-dark="5"] .segment:not(.dissolved) .segment-content p { color: #aaa; }
+body[data-dark="6"] .segment:not(.dissolved) .segment-content p,
+body[data-dark="7"] .segment:not(.dissolved) .segment-content p { color: #999; }
+body[data-dark="8"] .segment:not(.dissolved) .segment-content p,
+body[data-dark="9"] .segment:not(.dissolved) .segment-content p,
+body[data-dark="10"] .segment:not(.dissolved) .segment-content p { color: #ccc; }
+
+body.darkening .segment:not(.dissolved) {
+  transition: border-color 1.5s ease;
+}
+
+body[data-dark="4"] .segment:not(.dissolved),
+body[data-dark="5"] .segment:not(.dissolved),
+body[data-dark="6"] .segment:not(.dissolved),
+body[data-dark="7"] .segment:not(.dissolved),
+body[data-dark="8"] .segment:not(.dissolved),
+body[data-dark="9"] .segment:not(.dissolved),
+body[data-dark="10"] .segment:not(.dissolved) { border-bottom-color: #333; }
+
+body.darkening .segment-ui button { transition: color 1.5s ease; }
+
+body[data-dark="4"] .segment-ui button,
+body[data-dark="5"] .segment-ui button,
+body[data-dark="6"] .segment-ui button,
+body[data-dark="7"] .segment-ui button,
+body[data-dark="8"] .segment-ui button,
+body[data-dark="9"] .segment-ui button,
+body[data-dark="10"] .segment-ui button { color: #555; }
+
+body[data-dark="4"] .intro,
+body[data-dark="5"] .intro,
+body[data-dark="6"] .intro,
+body[data-dark="7"] .intro,
+body[data-dark="8"] .intro,
+body[data-dark="9"] .intro,
+body[data-dark="10"] .intro {
+  background: #111;
+  border-bottom-color: #333;
+  transition: background 1.5s ease;
+}
+
+body[data-dark="4"] .intro-caption,
+body[data-dark="5"] .intro-caption,
+body[data-dark="6"] .intro-caption,
+body[data-dark="7"] .intro-caption,
+body[data-dark="8"] .intro-caption,
+body[data-dark="9"] .intro-caption,
+body[data-dark="10"] .intro-caption { color: #ccc; }
+
+body[data-dark="4"] .intro-more-link,
+body[data-dark="5"] .intro-more-link,
+body[data-dark="6"] .intro-more-link,
+body[data-dark="7"] .intro-more-link,
+body[data-dark="8"] .intro-more-link,
+body[data-dark="9"] .intro-more-link,
+body[data-dark="10"] .intro-more-link { color: #555; }
+
+body.darkening .progress-container {
+  transition: background 1.5s ease;
+}
+
+body[data-dark="4"] .progress-container,
+body[data-dark="5"] .progress-container,
+body[data-dark="6"] .progress-container,
+body[data-dark="7"] .progress-container,
+body[data-dark="8"] .progress-container,
+body[data-dark="9"] .progress-container,
+body[data-dark="10"] .progress-container { background: #222; }
+
+/* ---- REDUCED MOTION ---- */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-indicator,
+  .segment-ghost,
+  .glitch-flash,
+  .glitch-text,
+  .glitch-text::before,
+  .glitch-text::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .segment.dissolving .segment-content {
+    opacity: 1;
+    filter: none;
+  }
+
+  .segment.scrambling .segment-content p {
+    color: #999;
+  }
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 600px) {
+  .intro-title {
+    font-size: 1.5rem;
+  }
+
+  .segment-content p {
+    font-size: 0.9rem;
+  }
+
+  .platform-nav {
+    padding: 0 12px;
+  }
+
+  .nav-right {
+    gap: 10px;
+  }
+
+  .nav-tab {
+    font-size: 0.82rem;
+  }
+}

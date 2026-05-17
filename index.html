@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frictie als vorm — Scrollverhaal</title>
+  <!-- DM Sans: humanist, slightly warm — reads as "written by a person"
+       IBM Plex Mono: institutional machine output, not hacker movie prop -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="glitch.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Platform nav: Volgend | Voor jou tabs + SVG icons
+       The chrome stays pristine. Only what you said is at risk. -->
+  <nav class="platform-nav">
+    <div class="nav-left">
+      <!-- wordmark only, no icon -->
+    </div>
+
+    <div class="nav-center">
+      <button class="nav-tab" id="tabVolgend">Volgend</button>
+      <button class="nav-tab nav-tab-active" id="tabVoorJou">Voor jou</button>
+    </div>
+
+    <div class="nav-right">
+      <button class="nav-btn" aria-label="Zoeken">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/>
+          <line x1="16.5" y1="16.5" x2="22" y2="22"/>
+        </svg>
+      </button>
+      <button class="nav-btn" aria-label="Notificaties">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+      <button class="nav-btn" aria-label="Profiel">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Progress bar die achteruit gaat -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+    <span class="progress-label" id="progressLabel">100% beschikbaar</span>
+  </div>
+
+  <header class="intro">
+    <div class="intro-inner">
+      <!-- No meta-commentary title. The first screen looks like a real post.
+           The dissolution should be a shock, not a fulfilled expectation. -->
+      <p class="intro-meta">
+        <span class="intro-avatar" aria-hidden="true"></span>
+        <span class="intro-author">@aimanhassani</span>
+        <span class="intro-dot">·</span>
+        <span class="intro-time">2 min geleden</span>
+      </p>
+      <p class="intro-caption">Je kent dit format. Je hebt het duizend keer gezien. Iemand begint te praten, de caption is drie regels, je scrollt door.</p>
+      <!-- "lees meer" is non-functional — like Instagram's caption expand.
+           It exists only to sell the platform mimicry. Scroll to continue. -->
+      <p class="intro-more"><span class="intro-more-link">lees meer</span></p>
+    </div>
+    <!-- SVG chevron, not Unicode arrow — Instagram doesn't have scroll indicators
+         but we keep a subtle one for affordance; it hides on first scroll -->
+    <div class="scroll-indicator" id="scrollIndicator">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </div>
+  </header>
+
+  <main id="story">
+
+    <section class="segment" data-segment="0">
+      <div class="segment-content">
+        <p>Je kent dit format. Je hebt het duizend keer gezien. Iemand begint te praten, de caption is drie regels, je scrollt door. Het algoritme zegt: deze persoon is 6,2 seconden je aandacht waard. Daarna: volgende.</p>
+      </div>
+      <div class="segment-ghost" aria-hidden="true"></div>
+      <div class="segment-ui">
+        <button class="ui-heart" aria-label="Vind ik leuk">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="heart-count">0</span>
+        </button>
+        <button class="ui-comment" aria-label="Reageren">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">uitgeschakeld</span>
+        </button>
+        <button class="ui-share" aria-label="Delen">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span class="ui-err">niet deelbaar</span>
+        </button>
+        <button class="ui-save" aria-label="Opslaan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">niet op te slaan</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="segment" data-segment="1">
+      <div class="segment-content">
+        <p>Stel je voor: je stuurt een spraakbericht. Je hapert, je zucht, je begint opnieuw. Maar de app transcribeert alleen de woorden. De aarzeling verdwijnt. De stilte wordt witruimte. Wat overblijft is een samenvatting van wat je voelde, niet wat je voelde.</p>
+      </div>
+      <div class="segment-ghost" aria-hidden="true"></div>
+      <div class="segment-ui">
+        <button class="ui-heart" aria-label="Vind ik leuk">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="heart-count">0</span>
+        </button>
+        <button class="ui-comment" aria-label="Reageren">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">uitgeschakeld</span>
+        </button>
+        <button class="ui-share" aria-label="Delen">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span class="ui-err">niet deelbaar</span>
+        </button>
+        <button class="ui-save" aria-label="Opslaan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">niet op te slaan</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="segment" data-segment="2">
+      <div class="segment-content">
+        <p>Ik maakte een film over jongens bij Rotterdam Centraal. Het format was: 50 minuten drama, lineair, NTR. Maar het verhaal was niet lineair. Het had gaten. Stiltes waar niemand iets zei omdat er niks te zeggen viel. Die stiltes pasten niet in het format. Het format wilde conflict, opbouw, catharsis. Het verhaal wilde gewoon ademruimte.</p>
+      </div>
+      <div class="segment-ghost" aria-hidden="true"></div>
+      <div class="segment-ui">
+        <button class="ui-heart" aria-label="Vind ik leuk">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="heart-count">0</span>
+        </button>
+        <button class="ui-comment" aria-label="Reageren">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">uitgeschakeld</span>
+        </button>
+        <button class="ui-share" aria-label="Delen">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span class="ui-err">niet deelbaar</span>
+        </button>
+        <button class="ui-save" aria-label="Opslaan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">niet op te slaan</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="segment" data-segment="3">
+      <div class="segment-content">
+        <p>Op TikTok heb je drie seconden. Drie seconden om iemand te overtuigen dat jouw verhaal hun duim waard is. Dat is geen storytelling. Dat is een sollicitatie bij een algoritme. En het algoritme heeft geen interesse in complexiteit. Het wil herkenning, snelheid, herhaling.</p>
+      </div>
+      <div class="segment-ghost" aria-hidden="true"></div>
+      <div class="segment-ui">
+        <button class="ui-heart" aria-label="Vind ik leuk">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="heart-count">0</span>
+        </button>
+        <button class="ui-comment" aria-label="Reageren">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">uitgeschakeld</span>
+        </button>
+        <button class="ui-share" aria-label="Delen">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span class="ui-err">niet deelbaar</span>
+        </button>
+        <button class="ui-save" aria-label="Opslaan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">niet op te slaan</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="segment" data-segment="4">
+      <div class="segment-content">
+        <p>Maar wat als het format zelf het verhaal is? Wat als de hapering, de weigering om glad te laden, de tekst die niet blijft staan, juist de betekenis draagt? Niet als kunstgreep. Als eerlijkheid. Omdat sommige verhalen niet passen in de container die je ze geeft.</p>
+      </div>
+      <div class="segment-ghost" aria-hidden="true"></div>
+      <div class="segment-ui">
+        <button class="ui-heart" aria-label="Vind ik leuk">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="heart-count">0</span>
+        </button>
+        <button class="ui-comment" aria-label="Reageren">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">uitgeschakeld</span>
+        </button>
+        <button class="ui-share" aria-label="Delen">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span class="ui-err">niet deelbaar</span>
+        </button>
+        <button class="ui-save" aria-label="Opslaan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">niet op te slaan</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="segment" data-segment="5">
+      <div class="segment-content">
+        <p>Je hebt nu gemerkt dat de vorige stukken weg zijn. Je scrollt terug en vindt foutmeldingen waar woorden stonden. Het systeem heeft besloten dat je klaar was met die tekst. Jij had daar geen zeggenschap over. Zo werkt het ook in je feed. Je ziet iets, het raakt je, je scrollt door, het is weg. Alleen het algoritme herinnert zich wat je hebt gezien.</p>
+      </div>
+      <div class="segment-ghost" aria-hidden="true"></div>
+      <div class="segment-ui">
+        <button class="ui-heart" aria-label="Vind ik leuk">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="heart-count">0</span>
+        </button>
+        <button class="ui-comment" aria-label="Reageren">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">uitgeschakeld</span>
+        </button>
+        <button class="ui-share" aria-label="Delen">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span class="ui-err">niet deelbaar</span>
+        </button>
+        <button class="ui-save" aria-label="Opslaan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">niet op te slaan</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="segment" data-segment="6">
+      <div class="segment-content">
+        <p>Mijn moeder stuurt me voice-notes in het Arabisch. Soms twintig achter elkaar. Ik luister ze in de trein, met een oortje in. Ze praat over boodschappen en dan ineens over mijn opa die ze mist. Geen overgang. Geen format. Alleen een stem die gaat waar ze moet. Dat is de eerlijkste interface die ik ken.</p>
+      </div>
+      <div class="segment-ghost" aria-hidden="true"></div>
+      <div class="segment-ui">
+        <button class="ui-heart" aria-label="Vind ik leuk">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="heart-count">0</span>
+        </button>
+        <button class="ui-comment" aria-label="Reageren">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">uitgeschakeld</span>
+        </button>
+        <button class="ui-share" aria-label="Delen">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span class="ui-err">niet deelbaar</span>
+        </button>
+        <button class="ui-save" aria-label="Opslaan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">niet op te slaan</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="segment" data-segment="7">
+      <div class="segment-content">
+        <p>Frictie is geen stijl. Frictie is wat er overblijft als je weigert om je verhaal glad te strijken voor het platform. Het is de stilte die de app wegfiltert. Het is de aarzeling die het algoritme niet kan meten. Het is de breuk in het format waar de werkelijkheid doorheen lekt.</p>
+      </div>
+      <div class="segment-ghost" aria-hidden="true"></div>
+      <div class="segment-ui">
+        <button class="ui-heart" aria-label="Vind ik leuk">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="heart-count">0</span>
+        </button>
+        <button class="ui-comment" aria-label="Reageren">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">uitgeschakeld</span>
+        </button>
+        <button class="ui-share" aria-label="Delen">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span class="ui-err">niet deelbaar</span>
+        </button>
+        <button class="ui-save" aria-label="Opslaan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">niet op te slaan</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="segment" data-segment="8">
+      <div class="segment-content">
+        <p>Dit verhaal is bijna op. Niet omdat het klaar is, maar omdat het zichzelf heeft opgebruikt. Elke alinea die je las bestaat niet meer. Je kunt het niet delen, niet screenshotten, niet bewaren in je saves. Het was er alleen in het moment dat jij keek. Net als dat ene bericht in je feed dat je raakte maar dat je nooit meer terugvindt.</p>
+      </div>
+      <div class="segment-ghost" aria-hidden="true"></div>
+      <div class="segment-ui">
+        <button class="ui-heart" aria-label="Vind ik leuk">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <span class="heart-count">0</span>
+        </button>
+        <button class="ui-comment" aria-label="Reageren">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">uitgeschakeld</span>
+        </button>
+        <button class="ui-share" aria-label="Delen">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span class="ui-err">niet deelbaar</span>
+        </button>
+        <button class="ui-save" aria-label="Opslaan">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span class="ui-err">niet op te slaan</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Final segment: no engagement UI. The system has run out of its own language. -->
+    <section class="segment segment-final" data-segment="9">
+      <div class="segment-content">
+        <p>Scroll terug als je wilt. Maar het verhaal is er niet meer. Er zijn alleen sporen. Tijdcodes. Foutmeldingen. Het bewijs dat er iets was, precies zo lang als jij keek.</p>
+      </div>
+      <div class="segment-ghost" aria-hidden="true"></div>
+    </section>
+
+  </main>
+
+  <footer id="footer">
+    <div class="footer-stats">
+      <span class="stat"><span class="stat-num" id="wordsLost">0</span> woorden gewist</span>
+      <span class="stat-sep">·</span>
+      <span class="stat"><span class="stat-num" id="segmentsGone">0</span> / 10 secties weg</span>
+      <span class="stat-sep">·</span>
+      <span class="stat"><span class="stat-num">0</span> keer gedeeld</span>
+    </div>
+    <p class="footer-system" id="footerSystem"></p>
+    <p class="credit">Frictie als vorm, Aiman Hassani, 2026<br>
+    <span class="credit-sub">Met steun van het Stimuleringsfonds Creatieve Industrie</span></p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
