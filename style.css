@@ -372,14 +372,11 @@ body {
   font-size: 0.7rem;
 }
 
-.ui-comment.comment-failed svg,
 .ui-share.share-failed svg,
 .ui-save.save-failed svg {
   display: none;
 }
 
-/* Permanent failure. Same amber as ghost: the UI failed the same way the content failed. */
-.ui-comment.comment-failed,
 .ui-share.share-failed,
 .ui-save.save-failed {
   cursor: default;
@@ -387,10 +384,77 @@ body {
   color: var(--ghost);
 }
 
-.ui-comment.comment-failed .ui-err,
 .ui-share.share-failed .ui-err,
 .ui-save.save-failed .ui-err {
   display: inline;
+}
+
+/* Comment button disappears after use — the option is gone once you've tried */
+.ui-comment.comment-done {
+  display: none;
+}
+
+/* ---- EPHEMERAL COMMENT ---- */
+.comment-input-wrap {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.comment-field {
+  flex: 1;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--text);
+  padding: 4px 0;
+  outline: none;
+  caret-color: var(--text);
+}
+
+.comment-field::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.comment-send {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.comment-send:hover {
+  color: var(--text);
+}
+
+/* Comment appears in essay register — you wrote it, briefly */
+.comment-bubble {
+  margin-top: 10px;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+}
+
+/* Ghost confirmation: machine register. Not an error — a receipt. */
+.comment-ghost {
+  margin-top: 8px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--ghost);
+  opacity: 0.75;
+  letter-spacing: 0.02em;
 }
 
 /* ---- DISSOLVING ---- */

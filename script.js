@@ -310,8 +310,87 @@ bewijs dat er iets was.`,
 
   document.querySelectorAll('.ui-comment').forEach(btn => {
     btn.addEventListener('click', () => {
-      if (btn.classList.contains('comment-failed')) return;
-      btn.classList.add('comment-failed');
+      if (btn.classList.contains('comment-done')) return;
+
+      const segment = btn.closest('.segment');
+      const segmentUI = btn.closest('.segment-ui');
+      let inputWrap = segment.querySelector('.comment-input-wrap');
+
+      if (!inputWrap) {
+        inputWrap = document.createElement('div');
+        inputWrap.className = 'comment-input-wrap';
+
+        const field = document.createElement('input');
+        field.type = 'text';
+        field.className = 'comment-field';
+        field.placeholder = 'Schrijf een reactie...';
+        field.autocomplete = 'off';
+
+        const sendBtn = document.createElement('button');
+        sendBtn.className = 'comment-send';
+        sendBtn.setAttribute('aria-label', 'Verzenden');
+
+        const sendSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        sendSvg.setAttribute('width', '16');
+        sendSvg.setAttribute('height', '16');
+        sendSvg.setAttribute('viewBox', '0 0 24 24');
+        sendSvg.setAttribute('fill', 'none');
+        sendSvg.setAttribute('stroke', 'currentColor');
+        sendSvg.setAttribute('stroke-width', '2');
+        sendSvg.setAttribute('stroke-linecap', 'round');
+        sendSvg.setAttribute('stroke-linejoin', 'round');
+        sendSvg.setAttribute('aria-hidden', 'true');
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', '22'); line.setAttribute('y1', '2');
+        line.setAttribute('x2', '11'); line.setAttribute('y2', '13');
+        const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        poly.setAttribute('points', '22 2 15 22 11 13 2 9 22 2');
+        sendSvg.appendChild(line);
+        sendSvg.appendChild(poly);
+        sendBtn.appendChild(sendSvg);
+
+        inputWrap.appendChild(field);
+        inputWrap.appendChild(sendBtn);
+        segmentUI.insertAdjacentElement('afterend', inputWrap);
+
+        function submitComment() {
+          const text = field.value.trim();
+          if (!text) return;
+
+          inputWrap.style.display = 'none';
+          btn.classList.add('comment-done');
+
+          const bubble = document.createElement('p');
+          bubble.className = 'comment-bubble';
+          bubble.textContent = text;
+          inputWrap.after(bubble);
+
+          function afterScramble() {
+            bubble.remove();
+            const ghost = document.createElement('p');
+            ghost.className = 'comment-ghost';
+            ghost.textContent = '// reactie verwerkt. niet bewaard voor jou.';
+            inputWrap.after(ghost);
+            setTimeout(() => {
+              ghost.style.transition = 'opacity 1.5s ease';
+              ghost.style.opacity = '0';
+              setTimeout(() => ghost.remove(), 1500);
+            }, 3000);
+          }
+
+          setTimeout(() => {
+            if (prefersReducedMotion) { afterScramble(); return; }
+            scrambleText(bubble, {}, () => { bubble.remove(); afterScramble(); });
+          }, 2500);
+        }
+
+        sendBtn.addEventListener('click', submitComment);
+        field.addEventListener('keydown', e => { if (e.key === 'Enter') submitComment(); });
+      }
+
+      const isShown = inputWrap.style.display === 'flex';
+      inputWrap.style.display = isShown ? 'none' : 'flex';
+      if (!isShown) inputWrap.querySelector('.comment-field').focus();
     });
   });
 
