@@ -1,52 +1,53 @@
-/* Prototype 1 v3: Scrollverhaal als kapotte feed */
+/* Prototype 1 v4: Scrollverhaal als kapotte feed */
 
 /*
-  COLOR SYSTEM — v3
-  -----------------
-  Concept: the system retains data after stripping the human signal.
-  What it keeps is not red (danger) or cyan (hacker). It keeps residue.
-  The color of a thermal print that has been in a drawer too long.
-  Phosphor amber — not neon, not warning, not hostile. Just: degraded.
+  THREE TYPOGRAPHIC REGISTERS — v4
+  ---------------------------------
+  The piece moves through three visual languages:
 
-  All ghost segments share ONE color. The system is indifferent to content.
-  It processed your voice-note the same way it processed the algorithm critique.
-  Color variation per segment was conceptually wrong. Uniform residue is correct.
+  1. PLATFORM surface (intro): DM Sans, white, platform chrome.
+     Looks like a post. The dissolution should be a shock.
 
-  Ghost amber: #b5a07a — low saturation, warm, archival. The color of data
-  that was retained but not maintained. Derived from phosphor decay and
-  thermal fax paper, not from terminal emulators.
+  2. ESSAY body (story segments): Instrument Serif, warm cream.
+     Reads as writing — not a caption, not a tweet. Someone made this.
+     The serif is not nostalgia. It is resistance to the caption format.
 
-  Dissolved ground: #0d0c0b — near-black with a warm undertone.
-  Not pure black (#000) or cold charcoal (#0a0a0a). The warmth makes
-  the amber ghost text feel deposited, not projected.
+  3. MACHINE residue (ghost data): IBM Plex Mono, near-black.
+     The system's language after it has stripped the human signal.
+     Corporate origin (IBM), not developer aesthetic (JetBrains).
 
-  Progress bar: corrected Instagram gradient (from #f09433 to #bc1888),
-  not the blue-shifted version. The cheerful gradient against the dying
-  page is the intended dissonance — but it should be precise parody.
-  The gradient loses opacity as dissolution progresses (handled in JS,
-  class .bar-fading below).
+  The typographic shift from platform → essay → machine is the piece.
+  It is not decoration. It is structure.
 
-  Nav: stays white the entire time. Platform chrome is immune.
-  Only what you said is at risk. When glitching starts, only the
-  Volgend tab text corrupts — handled in JS.
+  COLORS
+  ------
+  Background: #f2ece3 — warm cream, archival. Not clinical white.
+  The warmth is not decorative. It makes the near-black dissolution
+  more violent when it arrives — more distance to fall.
 
-  TYPOGRAPHY — v3
-  ---------------
-  DM Sans (body): humanist sans, warm humanist details in lowercase.
-  Reads as "written by a person" — necessary before the machine erases it.
-  IBM Plex Mono (terminal): institutional, corporate origin. Not a
-  developer tool (JetBrains) or a design trend (Space Mono). The name
-  alone carries meaning: a machine that belongs to an organization.
+  Text: #1a1814 — warm near-black. Not cold #262626.
+  The warmth keeps the writing in the same temperature family
+  as the background. The ghost amber (#b5a07a) is in that family too.
+  The dissolved black (#0d0c0b) breaks from it deliberately.
+
+  Nav: stays white (#ffffff). Platform chrome is immune.
+  This is the one surface that does not warm up or darken.
+  Only what you said is at risk.
 */
 
 :root {
+  --bg: #f2ece3;
+  --bg-warm: #e8e0d5;
+  --text: #1a1814;
+  --text-muted: #6b6360;
+  --platform-bg: #ffffff;
+  --platform-border: #dbdbdb;
+  --platform-text: #262626;
+  --border: #d8d0c8;
   --ghost: #b5a07a;
   --ghost-border: #8a7a5a;
   --ground-dissolved: #0d0c0b;
   --ground-dissolved-border: #1e1c19;
-  --platform-bg: #ffffff;
-  --platform-border: #dbdbdb;
-  --platform-text: #262626;
   --ig-gradient: linear-gradient(
     90deg,
     #f09433 0%,
@@ -64,8 +65,8 @@
 }
 
 body {
-  background: #fafafa;
-  color: #262626;
+  background: var(--bg);
+  color: var(--text);
   font-family: 'DM Sans', system-ui, sans-serif;
   font-size: 1rem;
   line-height: 1.6;
@@ -200,6 +201,8 @@ body {
 }
 
 /* ---- INTRO ---- */
+/* Platform surface: white, DM Sans. Looks like a post.
+   The warm cream world begins when you scroll past this. */
 .intro {
   min-height: 100vh;
   display: flex;
@@ -207,14 +210,13 @@ body {
   justify-content: center;
   align-items: center;
   padding: 80px 24px 40px;
-  background: #fff;
-  border-bottom: 1px solid #dbdbdb;
+  background: var(--platform-bg);
+  border-bottom: 1px solid var(--platform-border);
 }
 
 .intro-inner {
-  max-width: 520px;
+  max-width: 480px;
   width: 100%;
-  /* Left-aligned — like a real post caption, not a landing page headline */
   text-align: left;
 }
 
@@ -226,9 +228,9 @@ body {
   font-size: 0.85rem;
   color: #8e8e8e;
   margin-bottom: 10px;
+  font-family: 'DM Sans', system-ui, sans-serif;
 }
 
-/* CSS avatar circle — Instagram gradient ring, recognizable before anything breaks */
 .intro-avatar {
   width: 22px;
   height: 22px;
@@ -240,19 +242,20 @@ body {
 
 .intro-author {
   font-weight: 600;
-  color: #262626;
+  color: var(--platform-text);
 }
 
 .intro-dot {
   color: #ccc;
 }
 
-/* Caption styled like a real social media post — DM Sans at reading size,
-   truncated to 2-3 lines exactly like a platform caption preview */
+/* Caption: DM Sans, platform register. This is the last thing that
+   will look like a normal post. What follows is something else. */
 .intro-caption {
+  font-family: 'DM Sans', system-ui, sans-serif;
   font-size: 0.95rem;
   line-height: 1.7;
-  color: #262626;
+  color: var(--platform-text);
   letter-spacing: -0.012em;
   margin-bottom: 4px;
 }
@@ -262,6 +265,7 @@ body {
 }
 
 .intro-more-link {
+  font-family: 'DM Sans', system-ui, sans-serif;
   font-size: 0.85rem;
   color: #8e8e8e;
   text-decoration: none;
@@ -287,15 +291,15 @@ body {
 
 /* ---- STORY SEGMENTS ---- */
 #story {
-  max-width: 520px;
+  max-width: 480px;
   margin: 0 auto;
-  padding: 0 16px 10vh;
+  padding: 0 20px 10vh;
 }
 
 .segment {
   position: relative;
-  padding: 32px 0;
-  border-bottom: 1px solid #efefef;
+  padding: 44px 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .segment-content {
@@ -303,14 +307,15 @@ body {
   position: relative;
 }
 
+/* Essay register: Instrument Serif gives the writing a voice that refuses
+   to be a caption. The contrast with IBM Plex Mono ghost data is the form. */
 .segment-content p {
-  font-size: 0.95rem;
-  line-height: 1.7;
-  color: #262626;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 1.08rem;
+  line-height: 1.88;
+  color: var(--text);
   font-optical-sizing: auto;
-  /* Structural friction: imperceptible tightness built into the base state.
-     When ghost data appears at letter-spacing: 0.04em, the shift is felt. */
-  letter-spacing: -0.012em;
+  letter-spacing: -0.01em;
 }
 
 /* ---- ENGAGEMENT UI ---- */
@@ -489,9 +494,10 @@ body {
   100% { opacity: 1; }
 }
 
-/* Laatste segment */
+/* Final segment: the writing gets heavier before it disappears */
 .segment-final .segment-content p {
-  font-weight: 600;
+  font-style: italic;
+  font-weight: 400;
 }
 
 /* ---- FOOTER ---- */
@@ -507,7 +513,7 @@ body {
   justify-content: center;
   gap: 8px;
   font-size: 0.75rem;
-  color: #8e8e8e;
+  color: var(--text-muted);
   margin-bottom: 24px;
   font-family: 'IBM Plex Mono', monospace;
 }
@@ -559,12 +565,13 @@ body {
 }
 
 /* ---- PROGRESSIVE DARKENING ---- */
+/* Starts from warm cream (#f2ece3), not white. More distance to fall. */
 body.darkening {
   transition: background 2s ease;
 }
 
-body[data-dark="2"] { background: #efeeec; }
-body[data-dark="3"] { background: #dedad6; }
+body[data-dark="2"] { background: #e8e0d5; }
+body[data-dark="3"] { background: #d4c9be; }
 body[data-dark="4"] { background: #403e3b; transition: background 1.5s ease; }
 body[data-dark="5"] { background: #282622; }
 body[data-dark="6"] { background: #18160f; }
