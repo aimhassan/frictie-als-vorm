@@ -252,6 +252,10 @@ bewijs dat er iets was.`,
       updateProgress();
       updateStats();
       updateDarkening();
+      track({ type: 'segment_dissolved', segment: index, wordsLost: wordCounts[index] });
+      if (totalSegmentsGone === segments.length) {
+        track({ type: 'session_complete', segmentsRead: totalSegmentsGone });
+      }
     });
   }
 
@@ -305,6 +309,8 @@ bewijs dat er iets was.`,
       count.textContent = btn.classList.contains('liked')
         ? (totalWordsLost || 1)
         : 0;
+      const seg = btn.closest('.segment');
+      track({ type: 'engagement', action: 'heart', segment: seg ? Number(seg.dataset.segment) : -1 });
     });
   });
 
@@ -365,6 +371,9 @@ bewijs dat er iets was.`,
           bubble.textContent = text;
           inputWrap.after(bubble);
 
+          const segEl = btn.closest('.segment');
+          track({ type: 'comment', text, segment: segEl ? Number(segEl.dataset.segment) : -1 });
+
           function afterScramble() {
             bubble.remove();
             const ghost = document.createElement('p');
@@ -407,6 +416,18 @@ bewijs dat er iets was.`,
       btn.classList.add('save-failed');
     });
   });
+
+  // ---- ANALYTICS ----
+  const ANALYTICS = 'https://ops.wedowe.org/frictie/event';
+
+  function track(payload) {
+    fetch(ANALYTICS, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true,
+    }).catch(() => {});
+  }
 
   // ---- FOOTER ----
   function setFooterSystem() {
