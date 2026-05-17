@@ -278,15 +278,15 @@ body {
 }
 
 .scroll-indicator {
-  color: #ccc;
+  color: #8e8e8e;
   margin-top: auto;
   padding-bottom: 24px;
   animation: bounce 2s ease-in-out infinite;
 }
 
 @keyframes bounce {
-  0%, 100% { transform: translateY(0); opacity: 0.3; }
-  50% { transform: translateY(8px); opacity: 0.6; }
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50% { transform: translateY(10px); opacity: 1; }
 }
 
 /* ---- STORY SEGMENTS ---- */
