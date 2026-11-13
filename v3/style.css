@@ -720,7 +720,7 @@ body.is-dark .comment-correction {
   unicode-bidi: isolate;
 }
 
-/* Alinea 6 (de moeder): zelfde kleur, iets groter. Hier viel meer te verliezen. */
+/* Segment 6 (de zevende alinea, de moeder): zelfde kleur, iets groter. Hier viel meer te verliezen. */
 .segment[data-segment='6'] .trace-log {
   font-size: 0.78rem;
 }
@@ -819,6 +819,25 @@ body.is-dark .comment-correction {
 .farewell.shown {
   visibility: visible;
   animation: final-appear 2.5s ease-out;
+}
+
+/* De meting naast het slotspoor: "gelezen" meet niemand. */
+.farewell-correction {
+  margin-top: -14px;
+  max-width: 26rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--cream-dim);
+  padding-left: 12px;
+  border-left: 1px solid rgba(242, 236, 227, 0.45);
+  text-align: left;
+  visibility: hidden;
+}
+
+.farewell-correction.shown {
+  visibility: visible;
+  animation: final-appear 3s ease-out;
 }
 
 @keyframes final-appear {

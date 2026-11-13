@@ -55,17 +55,11 @@ Cache-Control: no-store
 viewer_memory: 0B | platform_cache: 2.4kB
 // je hebt het gezien. het systeem herinnert het zich. jij niet.`,
 
-    // Segment 6: mother / Arabic: different register. A failed transcription job,
-    // not a content moderation pipeline. More broken. The Arabic line stays.
-    `transcription_job_id: voice_note_47
-status: COMPLETE_WITH_ERRORS
-detected_language: ar-MA → nl-NL
-
-LOST: intonatie (niet transcribeerbaar)
-LOST: stilte voor "opa" (1.8s, geen schema-equivalent)
-LOST: de pauze daarna
-
-سؤال: كيف تترجم صوت أمك؟
+    // Segment 6 (de zevende alinea, de moeder). Versie 2 had hier een verzonnen transcriptielog van haar voice-note
+    // (job-id, foutstatus, taal, een stilte van 1.8s). Die gegevens over een echte opname zijn
+    // weg na de review van p22-worker (13 nov 2026, conceptbrief richting 5). Of de vraag blijft,
+    // beslist Aiman. Versie 2 staat ongewijzigd op /v2/.
+    `سؤال: كيف تترجم صوت أمك؟
 // geen antwoord beschikbaar.`,
 
     `console.warn("narrative_integrity") → undefined
@@ -142,6 +136,7 @@ bewijs dat er iets was.`,
   const footerSystem = $('footerSystem');
   const announcer = $('announcer');
   const farewell = $('farewell');
+  const farewellCorrection = $('farewellCorrection');
   const archiveBox = $('archiveBox');
   const archiveList = $('archiveList');
   const manifestNet = $('manifestNet');
@@ -163,6 +158,7 @@ bewijs dat er iets was.`,
       ui: null,
       words: countWords(text),
       state: 'live', // live | fading | erasing | gone
+      armed: false, // heeft boven de wislijn op je scherm gestaan
       visible: false,
       since: null, // sinds wanneer de alinea op het scherm staat
       ms: 0, // tijd op het scherm
@@ -239,13 +235,13 @@ bewijs dat er iets was.`,
       'Stimuleringsfonds Creatieve Industrie, Startregeling 2025';
     manifestNet.textContent =
       n === null
-        ? 'niets. deze browser laat het tellen van netwerkverzoeken niet toe.'
-        : 'niets. netwerkverzoeken sinds het laden, geteld door deze pagina: ' + n + '.';
+        ? 'niets door dit stuk. het laden van de pagina gaat via GitHub Pages; tellen na het laden kan deze browser niet.'
+        : 'niets door dit stuk. het laden van de pagina gaat via GitHub Pages; daarna geteld door deze pagina: ' + n + (n === 1 ? ' netwerkverzoek.' : ' netwerkverzoeken.');
   }
 
   // ---- TEKENVERVANGING ----
   // Het systeem schrijft over de tekst heen, van links naar rechts.
-  // Alinea 6 (de moeder) gaat zachter en trager.
+  // Segment 6 (de zevende alinea, de moeder) gaat zachter en trager.
   const CHARS = '█▓▒░╔╗╚╝║═╬╣╠╦╩▄▀■□▪▫●○◆◇';
   const CHARS_SOFT = '░▒▓ ─ ╌ ╎ · ∙ • ◦ ○ ◌ ∘';
 
@@ -426,11 +422,16 @@ bewijs dat er iets was.`,
 
   // ---- HET EINDE ----
   function theEnd() {
-    // "gelezen" telt de alinea's die op je scherm hebben gestaan.
+    // Het slotspoor uit versie 2 blijft woord voor woord. "Gelezen" meet niemand,
+    // dus staat de meting ernaast: hoeveel alinea's echt op je scherm stonden.
     const seen = segs.filter((s) => s.ms > 0).length;
-    farewell.textContent = ghostData[FAREWELL].replace('segmenten gelezen: 10', 'segmenten gelezen: ' + seen);
+    farewell.textContent = ghostData[FAREWELL];
+    farewellCorrection.textContent =
+      'gemeten: ' + seen + ' van ' + segs.length + " alinea's stonden op je scherm. of je ze las, meet niemand.";
     farewell.classList.add('shown');
+    farewellCorrection.classList.add('shown');
     farewell.removeAttribute('aria-hidden');
+    farewellCorrection.removeAttribute('aria-hidden');
     document.body.classList.add('ended');
   }
 
@@ -449,7 +450,7 @@ bewijs dat er iets was.`,
 
   function updateArchive(s) {
     const parts = [];
-    if (s.state === 'gone') parts.push('op je scherm ' + fmtDur(s.ms), 'gewist op ' + fmtTC(s.erasedAt));
+    if (s.state === 'gone') parts.push('gemeten: op je scherm ' + fmtDur(s.ms), 'gewist op ' + fmtTC(s.erasedAt));
     else parts.push('nog in de feed');
     parts.push(s.words + ' woorden');
     if (s.comment) parts.push('reactie: ' + s.comment.chars + ' tekens, niet verstuurd');
@@ -596,11 +597,20 @@ bewijs dat er iets was.`,
       measure(s, rect, vh, now);
       if (s.state === 'erasing') continue;
       const bottom = rect.bottom;
+      // Alleen wat op je scherm heeft gestaan, kan verdwijnen. Wie overslaat of springt, wist niets.
+      if (s.visible && bottom >= vh * ERASE_AT) s.armed = true;
+      if (!s.armed) continue;
       if (bottom < vh * ERASE_AT) {
         erase(s);
-      } else if (bottom < vh * FADE_AT && s.state === 'live') {
-        s.state = 'fading';
-        s.node.classList.add('dissolving');
+      } else if (bottom < vh * FADE_AT) {
+        if (s.state === 'live') {
+          s.state = 'fading';
+          s.node.classList.add('dissolving');
+        }
+      } else if (s.state === 'fading') {
+        // Terugscrollen houdt hem nog even vast. Pas voorbij de lijn is hij weg.
+        s.state = 'live';
+        s.node.classList.remove('dissolving');
       }
     }
   }
@@ -625,6 +635,7 @@ bewijs dat er iets was.`,
   });
   buildArchive();
   farewell.textContent = ghostData[FAREWELL]; // houdt de plek vrij, onzichtbaar tot het einde
+  farewellCorrection.textContent = "gemeten: 10 van 10 alinea's stonden op je scherm. of je ze las, meet niemand.";
   updateProgress();
   updateStats();
   renderSystem();

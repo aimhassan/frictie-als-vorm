@@ -8,27 +8,39 @@ Adres: https://aimhassan.github.io/frictie-als-vorm/v3/
 
 Van platformparodie naar counter-archief: het stuk houdt de fout en schrijft de correctie ernaast.
 
-- **Het spoor corrigeert het platform.** Elke gewiste alinea laat het platformlog uit versie 2 achter, woord voor woord, nu met het label "simulatie: geen echt platformlog". Ernaast staat wat er bij deze lezing echt gebeurde: hoe lang de alinea op je scherm stond, de tijdcode van het wissen en het aantal woorden. Dat rekent de browser van de lezer zelf uit.
-- **Niets verlaat het toestel.** Analytics is eruit: de code bevat geen netwerkverzoek meer. De lettertypes staan naast de pagina in plaats van bij Google Fonts. Een reactie verschijnt, wordt overschreven en gaat nergens heen; alleen het aantal tekens blijft als spoor. De pagina telt zelf de netwerkverzoeken na het laden en toont dat getal (gemeten: 0).
+- **Het spoor corrigeert het platform.** Elke gewiste alinea laat het platformlog uit versie 2 achter, met het label "simulatie: geen echt platformlog". Ernaast staat wat er bij deze lezing gemeten is: hoe lang de alinea op je scherm stond, de tijdcode van het wissen en het aantal woorden. Dat rekent de browser van de lezer zelf uit. Of iemand las, meet het stuk niet.
+- **Dit stuk verstuurt niets.** Analytics is eruit: de code bevat geen netwerkverzoek meer. De lettertypes staan naast de pagina in plaats van bij Google Fonts. Een reactie verschijnt, wordt overschreven en gaat nergens heen; alleen het aantal tekens blijft als spoor, in dit tabblad. Het laden van de pagina gaat via GitHub Pages; daarna telt de pagina zelf de netwerkverzoeken en toont dat getal (gemeten: 0).
 - **De footer corrigeert zichzelf.** De zin uit versie 2 ("Dit stuk registreert anoniem welke segmenten je las en wat je typte als reactie ...") blijft staan, doorgestreept, met de correctie ernaast.
-- **Een einde dat op elk scherm klopt.** Na de feed volgt minstens een scherm ruimte, zodat ook de laatste alinea dezelfde regel volgt. Het slotspoor van versie 2 staat nu direct onder de feed, zodat het op elk scherm in beeld komt. Getest op schermen van 320 tot 2560 pixels breed: overal 10 van 10, 0% beschikbaar, slotspoor in beeld. Versie 2 eindigde op 7 tot 9 van 10, afhankelijk van het scherm.
-- **De regel is uit te leggen.** Een alinea vervaagt zodra de onderkant ervan de helft van je scherm passeert en wordt gewist zodra die het bovenste derde bereikt. Dat staat ook in het archief.
+- **Een einde dat op elk scherm klopt.** Na de feed volgt minstens een scherm ruimte, zodat ook de laatste alinea dezelfde regel volgt. Het slotspoor uit versie 2 staat woord voor woord direct onder de feed, zodat het op elk scherm in beeld komt, met de meting eronder. Versie 2 eindigde op 7 tot 9 van de 10 gewiste alinea's, afhankelijk van het scherm.
+- **De regel is uit te leggen.** Een alinea die op je scherm heeft gestaan, vervaagt zodra je verder scrolt en de onderkant de helft van je scherm passeert, en wordt gewist zodra die het bovenste derde bereikt. Wat je overslaat, blijft staan. Dat staat ook in het archief.
 - **De tekst verspringt niet meer.** Het gewiste stuk houdt de maat van wat er stond. In versie 2 schoof de tekst onder de lezer op de telefoon tot 86 pixels op bij een wissing; in versie 3 hooguit 1.
-- **Toegang hoort bij het werk.** Grotere letter op de telefoon (ongeveer 21 in plaats van 14 pixels). Sporen zijn leesbaar voor schermlezers en elke wissing wordt gemeld. De focus blijft op zijn plek als de alinea eronder verdwijnt. "Hele tekst bekijken" onder de caption opent het archief: alle tien alinea's met hun sporen. Wie daarheen springt, slaat de feed over; de regel geldt dan ook voor die alinea's (op je scherm: 0,0 s). Bij minder beweging (reduced motion) werkt het hele stuk zonder animatie. Contrast verhoogd waar het te laag was.
+- **Toegang hoort bij het werk.** Grotere letter op de telefoon (ongeveer 21 in plaats van 14 pixels). Sporen zijn leesbaar voor schermlezers en elke wissing wordt gemeld. De focus blijft op zijn plek als de alinea eronder verdwijnt. "Hele tekst bekijken" onder de caption opent het archief: alle tien alinea's met hun gemeten sporen. Springen naar het archief wist niets. Bij minder beweging (reduced motion) werkt het hele stuk zonder animatie. Contrast verhoogd waar het te laag was.
 - **Glitch.** De tekenvervanging blijft: het systeem schrijft over de tekst heen. De rood-blauwe beeldsplitsing is eruit; dat was decor, geen regel.
 - **"lees meer"** klapt de caption nu echt uit, met de rest van de eerste alinea.
 
+Getest met een Playwright-script (in de P-22-map: `talk/demo/test_scroll_versions.py`), lokaal en op de live site, op 9 schermformaten van 320 tot 2560 pixels breed en met reduced motion: overal worden alle tien alinea's gewist, eindigt de teller op 0% beschikbaar en komt het slotspoor in beeld; geen netwerkverzoeken na het laden en geen verzoeken naar andere sites.
+
+### Na de review van p22-worker (13 november, avond)
+
+p22-worker toetste de eerste publicatie van versie 3 (commit 37a1fa2) aan de conceptbrief, op kaart t_e4604025. Wat daarna veranderde:
+
+- **De zevende alinea, over de moeder:** de verzonnen opnamegegevens over haar voice-note zijn weg (job-id voice_note_47, de foutstatus, de taalregel, de stilte van 1.8s en de LOST-regels). Over de Arabische vraag en "// geen antwoord beschikbaar." beslist Aiman; p22-worker adviseert ook die weg te halen. Versie 2 staat ongewijzigd op /v2/.
+- **Springen wist niet meer.** Alleen wat op je scherm heeft gestaan, kan verdwijnen. Wie via "Hele tekst bekijken" naar het archief gaat, laat de feed heel. Terugscrollen voordat een alinea de lijn passeert, haalt hem nog even terug.
+- **Preciezere privacyzinnen.** "Dit stuk registreert niets" was te absoluut: het stuk meet wel, alleen in het tabblad. De correctie in de footer luidt nu: "Dit stuk verstuurt niets. Wat het meet, blijft in dit tabblad en is weg zodra je het sluit. Alleen het laden van de pagina gaat via GitHub Pages."
+- **Het slotspoor staat er weer woord voor woord**, met "segmenten gelezen: 10". Lezen meet niemand, dus staat de meting eronder: "gemeten: 10 van 10 alinea's stonden op je scherm. of je ze las, meet niemand."
+- **Het archief heet nu** "De hele tekst, met de sporen van dit scherm", en elk spoor daar begint met "gemeten:".
+
 ### Nieuwe zinnen in versie 3, nog niet door Aiman goedgekeurd
 
-Zijn alinea's en //-regels staan er woord voor woord. Deze zinnen zijn nieuw en wachten op zijn stem:
+Zijn alinea's, het slotspoor en de //-regels staan er woord voor woord. Deze zinnen zijn nieuw en wachten op zijn stem:
 
 - onder de caption: "Hele tekst bekijken"
 - labels bij elk spoor: "simulatie: geen echt platformlog" en "gemeten: op dit toestel, niets verstuurd"
 - regels in het spoor: "op je scherm", "gewist op", "woorden", "reactie: ... tekens, niet verstuurd"
 - onder een reactie: "correctie: ook niet voor iemand anders. niets verstuurd."
-- archief: "De hele tekst, met jouw sporen", de regel, "tijdcodes tellen vanaf het openen van deze pagina", en de lijst bewaard, niet bewaard, verstuurd
-- footer: "versie 2 zei" en "correctie: Dit stuk registreert niets en verstuurt niets. Je sporen blijven in dit tabblad en verdwijnen als je het sluit. Alleen het laden van de pagina loopt via GitHub Pages."
-- slotspoor: het getal achter "segmenten gelezen" wordt nu gemeten (alinea's die op je scherm stonden) in plaats van altijd 10.
+- onder het slotspoor: "gemeten: 10 van 10 alinea's stonden op je scherm. of je ze las, meet niemand."
+- archief: "De hele tekst, met de sporen van dit scherm", de regel, "tijdcodes tellen vanaf het openen van deze pagina", en de lijst bewaard, niet bewaard, verstuurd
+- footer: "versie 2 zei" en "correctie: Dit stuk verstuurt niets. Wat het meet, blijft in dit tabblad en is weg zodra je het sluit. Alleen het laden van de pagina gaat via GitHub Pages."
 
 ## Versie 2, 17 mei 2026
 
@@ -36,7 +48,7 @@ Adres: https://aimhassan.github.io/frictie-als-vorm/v2/ (en voorlopig ook de hoo
 
 De versie die sinds 17 mei live staat. In de code heet ze `scrollverhaal_v3` en de stylesheet noemt zich v4. Ongewijzigd bewaard, met wat versie 3 corrigeert:
 
-- het einde hangt af van het scherm: op de telefoon 9 van 10, op een laptop 8 van 10, en het slotspoor komt niet altijd in beeld;
+- het einde hangt af van het scherm: op de telefoon worden 9 van de 10 alinea's gewist, op een laptop 8, en het slotspoor komt niet altijd in beeld;
 - de footer belooft registratie, terwijl het adres waar de gegevens heen gaan op 12 november 404 gaf en de code reactietekst verstuurt;
-- het platformlog bevat verzonnen getallen zonder label;
+- het platformlog bevat verzonnen getallen zonder label, ook over de voice-note van de moeder;
 - na het wissen krijgt een schermlezer niets meer, en de tekst op de telefoon is ongeveer 14 pixels.
