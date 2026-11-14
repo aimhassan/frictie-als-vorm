@@ -463,6 +463,15 @@ tijdcodes. foutmeldingen.`,
   }
 
   function openArchive(moveFocus) {
+    // Wie naar de hele tekst springt, slaat de feed over: daardoor wordt niets gewist,
+    // ook post 01 niet, al stond die bij het openen in beeld.
+    segs.forEach((s) => {
+      if (s.state === 'live' || s.state === 'fading') {
+        s.armed = false;
+        s.state = 'live';
+        s.node.classList.remove('dissolving');
+      }
+    });
     archiveBox.open = true;
     // Direct, zonder animatie: wie springt, slaat de feed over en ziet hem niet voorbij vliegen.
     $('archief').scrollIntoView({ behavior: 'auto', block: 'start' });

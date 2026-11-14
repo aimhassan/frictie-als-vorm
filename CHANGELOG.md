@@ -13,7 +13,7 @@ Na Aimans feedback op versie 4:
 - **Alinea 04 herschreven**, zodat ze klopt: "Als ik een video post, zie ik daarna hoe lang mensen kijken. De meesten zijn na een paar seconden weg. Ik merk dat ik sneller ga praten. Alsof ik solliciteer."
 - **Alinea 07:** zijn moeder praat Marokkaans en Nederlands door elkaar. Het log eronder zegt dat de taal binnen een zin wisselt.
 - **"scroll" met dubbele l**, zoals Aiman het schrijft.
-- De regel kijkt nu naar de tekst in de post, niet naar de lege ruimte eromheen. Verder werkt alles als in versie 4; getest op 9 schermformaten en met reduced motion. De hoofdpagina blijft versie 3 tot Aiman kiest.
+- De regel kijkt nu naar de tekst in de post, niet naar de lege ruimte eromheen. Springen naar het archief via de toetsenbordlink wist niets, ook post 01 niet (na de review van p22-worker, kaart t_384efb5e). Verder werkt alles als in versie 4; getest op 9 schermformaten en met reduced motion. De hoofdpagina blijft versie 3 tot Aiman kiest.
 
 Nieuw in versie 5 en nog niet door Aiman goedgekeurd: alinea 04 en de logregels bij 04 en 07.
 
