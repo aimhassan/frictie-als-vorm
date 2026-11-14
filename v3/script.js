@@ -55,11 +55,19 @@ Cache-Control: no-store
 viewer_memory: 0B | platform_cache: 2.4kB
 // je hebt het gezien. het systeem herinnert het zich. jij niet.`,
 
-    // Segment 6 (de zevende alinea, de moeder). Versie 2 had hier een verzonnen transcriptielog van haar voice-note
-    // (job-id, foutstatus, taal, een stilte van 1.8s). Die gegevens over een echte opname zijn
-    // weg na de review van p22-worker (13 nov 2026, conceptbrief richting 5). De vraag blijft:
-    // dat besloot Aiman op 14 nov 2026. Versie 2 staat ongewijzigd op /v2/.
-    `سؤال: كيف تترجم صوت أمك؟
+    // Segment 6 (de zevende alinea, de moeder): een mislukte transcriptie, zachter en trager gewist.
+    // Fictie, zoals het hele log, en daarom gelabeld als simulatie. Aiman, 14 nov 2026: "I dont mind
+    // any fiction elements if they are to strengthen the story." Na de review van p22-worker was dit
+    // log kort ingekort; op zijn besluit staat het weer woord voor woord zoals in versie 2.
+    `transcription_job_id: voice_note_47
+status: COMPLETE_WITH_ERRORS
+detected_language: ar-MA → nl-NL
+
+LOST: intonatie (niet transcribeerbaar)
+LOST: stilte voor "opa" (1.8s, geen schema-equivalent)
+LOST: de pauze daarna
+
+سؤال: كيف تترجم صوت أمك؟
 // geen antwoord beschikbaar.`,
 
     `console.warn("narrative_integrity") → undefined
