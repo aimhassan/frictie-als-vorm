@@ -57,8 +57,8 @@ viewer_memory: 0B | platform_cache: 2.4kB
 
     // Segment 6 (de zevende alinea, de moeder). Versie 2 had hier een verzonnen transcriptielog van haar voice-note
     // (job-id, foutstatus, taal, een stilte van 1.8s). Die gegevens over een echte opname zijn
-    // weg na de review van p22-worker (13 nov 2026, conceptbrief richting 5). Of de vraag blijft,
-    // beslist Aiman. Versie 2 staat ongewijzigd op /v2/.
+    // weg na de review van p22-worker (13 nov 2026, conceptbrief richting 5). De vraag blijft:
+    // dat besloot Aiman op 14 nov 2026. Versie 2 staat ongewijzigd op /v2/.
     `سؤال: كيف تترجم صوت أمك؟
 // geen antwoord beschikbaar.`,
 

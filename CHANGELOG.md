@@ -24,7 +24,7 @@ Getest met een Playwright-script (in de P-22-map: `talk/demo/test_scroll_version
 
 p22-worker toetste de eerste publicatie van versie 3 (commit 37a1fa2) aan de conceptbrief, op kaart t_e4604025. Wat daarna veranderde:
 
-- **De zevende alinea, over de moeder:** de verzonnen opnamegegevens over haar voice-note zijn weg (job-id voice_note_47, de foutstatus, de taalregel, de stilte van 1.8s en de LOST-regels). Over de Arabische vraag en "// geen antwoord beschikbaar." beslist Aiman; p22-worker adviseert ook die weg te halen. Versie 2 staat ongewijzigd op /v2/.
+- **De zevende alinea, over de moeder:** de verzonnen opnamegegevens over haar voice-note zijn weg (job-id voice_note_47, de foutstatus, de taalregel, de stilte van 1.8s en de LOST-regels). De Arabische vraag en "// geen antwoord beschikbaar." blijven: dat besloot Aiman op 14 november. p22-worker had geadviseerd ook die weg te halen. Versie 2 staat ongewijzigd op /v2/.
 - **Springen wist niet meer.** Alleen wat op je scherm heeft gestaan, kan verdwijnen. Wie via "Hele tekst bekijken" naar het archief gaat, laat de feed heel. Terugscrollen voordat een alinea de lijn passeert, haalt hem nog even terug.
 - **Preciezere privacyzinnen.** "Dit stuk registreert niets" was te absoluut: het stuk meet wel, alleen in het tabblad. De correctie in de footer luidt nu: "Dit stuk verstuurt niets. Wat het meet, blijft in dit tabblad en is weg zodra je het sluit. Alleen het laden van de pagina gaat via GitHub Pages."
 - **Het slotspoor staat er weer woord voor woord**, met "segmenten gelezen: 10". Lezen meet niemand, dus staat de meting eronder: "gemeten: 10 van 10 alinea's stonden op je scherm. of je ze las, meet niemand."
