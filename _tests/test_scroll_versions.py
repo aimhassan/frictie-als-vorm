@@ -249,7 +249,7 @@ def main():
             ]
             results['runs'] = [full_run(browser, base, n, w, h, m, False, s) for (n, w, h, m, s) in sizes]
             results['reduced_phone'] = full_run(browser, base, 'reduced_phone', 390, 844, True, True, True)
-            if PATH.startswith('/v3'):
+            if PATH.startswith('/v') or PATH == '/':
                 results['comment_focus'] = comment_and_focus(browser, base)
                 results['route'] = route(browser, base)
             browser.close()

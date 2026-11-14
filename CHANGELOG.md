@@ -2,6 +2,17 @@
 
 Elke versie blijft te zien op een eigen adres. Sinds 14 november is de hoofdpagina, https://aimhassan.github.io/frictie-als-vorm/, versie 3: dat koos Aiman. Die hoofdpagina is ook het doel van de QR-code in de NADD-talk. De hoofdpagina gebruikt de bestanden uit /v3/; alleen index.html staat er apart, met aangepaste paden.
 
+## Versie 4, 14 november 2026
+
+Adres: https://aimhassan.github.io/frictie-als-vorm/v4/
+
+- **Nieuwe teksten.** Alle tien alinea's zijn opnieuw geschreven, dichter bij Aimans eigen stem: ik, korte zinnen, iets concreets, en een landing in plaats van een slotsom. Samen 243 woorden, was ongeveer 500. Alinea 03 gebruikt zijn eigen zinnen over zijn film Bliksem; alinea 05 is zijn eigen statement over frictie, in het Nederlands.
+- **Het platformlog** volgt de nieuwe alinea's; een paar regels zijn kaler gemaakt. Het log bij de moeder-alinea staat er zoals Aiman besloot.
+- **Het slotspoor** herhaalt de laatste alinea niet meer, en de meting eronder is kaal: "gemeten: 10 van 10 alinea's op je scherm. gelezen: niet te meten."
+- Verder werkt alles als in versie 3, getest met hetzelfde script op 9 schermformaten en met reduced motion. De hoofdpagina blijft versie 3 tot Aiman kiest.
+
+Nieuw in versie 4 en nog niet door Aiman goedgekeurd: de tien alinea's, de nieuwe logregels, de correctie onder een reactie ("correctie: niet verstuurd. nergens opgeslagen.") en de meting onder het slotspoor.
+
 ## Versie 3, 13 november 2026
 
 Adres: https://aimhassan.github.io/frictie-als-vorm/v3/
@@ -41,7 +52,7 @@ p22-worker hercheckte versie 3 op 14 november (kaart t_6dbbbbe2): akkoord op de 
 
 ### Nieuwe zinnen in versie 3, nog niet door Aiman goedgekeurd
 
-Zijn alinea's, het slotspoor en de //-regels staan er woord voor woord. Deze zinnen zijn nieuw en wachten op zijn stem:
+De alinea's, het slotspoor en de //-regels uit versie 2 staan er woord voor woord. Deze zinnen zijn nieuw en wachten op Aimans stem:
 
 - onzichtbare link voor toetsenbord en schermlezer: "Naar de hele tekst"
 - labels bij elk spoor: "simulatie: geen echt platformlog" en "gemeten: op dit toestel, niets verstuurd"

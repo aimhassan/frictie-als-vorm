@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <title>Frictie als Vorm</title>
+  <!-- Geen favicon-verzoek: ook dat zou het netwerk op gaan. -->
+  <link rel="icon" href="data:,">
+  <!-- Lettertypes staan naast deze pagina. Geen Google Fonts: ook Google ziet de lezer niet.
+       Alles wordt vooraf geladen, zodat na het laden niets meer over het netwerk gaat. -->
+  <link rel="preload" href="fonts/instrumentserif-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/instrumentserif-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/dmsans-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/plexmono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/plexmono-500-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Voor schermlezers en toetsenbord: de hele tekst, zonder wissen. Onzichtbaar tot je met Tab op
+       deze link komt. Wie scrolt, wordt naar beneden gedwongen en vindt de hele tekst na het einde. -->
+  <a class="skip-link" id="routeLink" href="#archief">Naar de hele tekst</a>
+
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
+    <symbol id="i-comment" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+  </svg>
+
+  <!-- Platformchroom. Het blijft ongerept en doet niets: daarom is het voor schermlezers
+       en toetsenbord verborgen. Alleen wat jij las loopt gevaar. -->
+  <div class="platform-nav" aria-hidden="true">
+    <div class="nav-left"></div>
+    <div class="nav-center">
+      <span class="nav-tab" id="tabVolgend">Volgend</span>
+      <span class="nav-tab nav-tab-active">Voor jou</span>
+    </div>
+    <div class="nav-right">
+      <span class="nav-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-search"/></svg></span>
+      <span class="nav-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-heart"/></svg></span>
+      <span class="nav-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-user"/></svg></span>
+    </div>
+  </div>
+
+  <!-- Voortgang die achteruit gaat -->
+  <div class="progress" aria-hidden="true">
+    <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+    <span class="progress-label" id="progressLabel">100% beschikbaar</span>
+  </div>
+
+  <!-- Meldingen voor schermlezers: welke alinea net gewist is -->
+  <div class="sr-only" id="announcer" role="status" aria-live="polite"></div>
+
+  <header class="intro">
+    <div class="intro-inner">
+      <p class="intro-meta">
+        <span class="intro-avatar" aria-hidden="true"></span>
+        <span class="intro-author">@aimanhassani</span>
+        <span class="intro-dot" aria-hidden="true">·</span>
+        <span class="intro-time">2 min geleden</span>
+      </p>
+      <p class="intro-caption" id="caption" tabindex="-1">Ik lig in bed en scrol. Iemand begint te praten. Ik ben al verder voor de eerste zin af is.<span id="captionRest" hidden> Ik weet niet meer wie het was.</span></p>
+      <p class="intro-more"><button type="button" class="intro-more-link" id="moreBtn" aria-expanded="false" aria-controls="captionRest">lees meer</button></p>
+    </div>
+    <div class="scroll-indicator" id="scrollIndicator" aria-hidden="true">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chevron"/></svg>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="feed" id="story" aria-label="Frictie als Vorm, scrollverhaal">
+
+      <section class="segment" data-segment="0">
+        <div class="segment-content">
+          <p>Ik lig in bed en scrol. Iemand begint te praten. Ik ben al verder voor de eerste zin af is. Ik weet niet meer wie het was.</p>
+        </div>
+        <div class="segment-ghost" hidden></div>
+      </section>
+
+      <section class="segment" data-segment="1">
+        <div class="segment-content">
+          <p>Ik spreek een bericht in voor een vriend. Halverwege stop ik. Ik begin opnieuw. Hij krijgt het als tekst. Dat ik twee keer begon, staat er niet in.</p>
+        </div>
+        <div class="segment-ghost" hidden></div>
+      </section>
+
+      <section class="segment" data-segment="2">
+        <div class="segment-content">
+          <p>Ik begon een film omdat ik de liefde wilde laten zien. De film liep anders. En ergens onderweg draaide de camera naar mij.</p>
+        </div>
+        <div class="segment-ghost" hidden></div>
+      </section>
+
+      <section class="segment" data-segment="3">
+        <div class="segment-content">
+          <p>Als ik iets post, heb ik drie seconden. Daarna is de duim al verder. Ik merk dat ik sneller ga praten. Alsof ik solliciteer.</p>
+        </div>
+        <div class="segment-ghost" hidden></div>
+      </section>
+
+      <section class="segment" data-segment="4">
+        <div class="segment-content">
+          <p>Ik maak werk vanuit een simpele ergernis. Als een verhaal soepel loopt, verdwijnt er iets. Wie gezien wordt, wie onzichtbaar blijft. Dus werk ik met frictie.</p>
+        </div>
+        <div class="segment-ghost" hidden></div>
+      </section>
+
+      <section class="segment" data-segment="5">
+        <div class="segment-content">
+          <p>Ik scrol terug. Wat er stond, is weg. Ik weet nog dat het me raakte. Niet meer waarom.</p>
+        </div>
+        <div class="segment-ghost" hidden></div>
+      </section>
+
+      <section class="segment" data-segment="6">
+        <div class="segment-content">
+          <p>Mijn moeder stuurt me spraakberichten in het Arabisch. Ze begint over boodschappen. En dan ineens over opa. Daartussen zit een stilte. Die hoor ik elke keer.</p>
+        </div>
+        <div class="segment-ghost" hidden></div>
+      </section>
+
+      <section class="segment" data-segment="7">
+        <div class="segment-content">
+          <p>Als iets me raakt, pak ik me camera, om het te begrijpen. Soms schuurt dat. Ik film toch door.</p>
+        </div>
+        <div class="segment-ghost" hidden></div>
+      </section>
+
+      <section class="segment" data-segment="8">
+        <div class="segment-content">
+          <p>Dit verhaal is bijna op. Ik zou het willen bewaren. Maar dan blijft het alleen in mijn hoofd. En dan verdwijnt het weer.</p>
+        </div>
+        <div class="segment-ghost" hidden></div>
+      </section>
+
+      <!-- Laatste alinea: geen knoppen. Het systeem heeft geen eigen taal meer. -->
+      <section class="segment segment-final" data-segment="9">
+        <div class="segment-content">
+          <p>Scrol terug als je wilt. Het verhaal is weg. Wat er nog staat, is bewijs dat het er was. Precies zo lang als jij keek. En dat is genoeg.</p>
+        </div>
+        <div class="segment-ghost" hidden></div>
+      </section>
+
+    </article>
+
+    <!-- Na de feed. Altijd minstens een scherm hoog, zodat ook de laatste alinea dezelfde
+         regel volgt als de rest: het einde klopt op elk scherm. -->
+    <div class="after" id="after">
+
+      <section class="endcard" aria-labelledby="endTitle">
+        <h2 class="sr-only" id="endTitle">Einde van de feed</h2>
+        <p class="farewell" id="farewell" aria-hidden="true"></p>
+        <p class="farewell-correction" id="farewellCorrection" aria-hidden="true"></p>
+        <p class="footer-stats">
+          <span class="stat"><span class="stat-num" id="wordsLost">0</span> woorden gewist</span>
+          <span class="stat-sep" aria-hidden="true">·</span>
+          <span class="stat"><span class="stat-num" id="segmentsGone">0</span> / 10 secties weg</span>
+          <span class="stat-sep" aria-hidden="true">·</span>
+          <span class="stat"><span class="stat-num">0</span> keer gedeeld</span>
+        </p>
+      </section>
+
+      <section class="archive" id="archief" aria-labelledby="archiefTitel">
+        <details class="archive-box" id="archiveBox">
+          <summary id="archiefTitel">De hele tekst, met de sporen van dit scherm</summary>
+          <div class="archive-body">
+            <p class="archive-rule">regel: een alinea die op je scherm heeft gestaan, vervaagt zodra je verder scrolt en de onderkant ervan de helft van je scherm passeert, en wordt gewist zodra die het bovenste derde bereikt. wat je overslaat, blijft staan. voor iedereen hetzelfde, op elk scherm. tijdcodes tellen vanaf het openen van deze pagina.</p>
+            <ol class="archive-list" id="archiveList" role="list"></ol>
+            <dl class="manifest" id="manifest">
+              <div>
+                <dt>bewaard</dt>
+                <dd>alleen in dit tabblad: per alinea de tijd op je scherm, het moment van wissen en het aantal woorden. weg zodra je het tabblad sluit.</dd>
+              </div>
+              <div>
+                <dt>niet bewaard</dt>
+                <dd>wat je typte (alleen het aantal tekens), wie je bent, of je echt las.</dd>
+              </div>
+              <div>
+                <dt>verstuurd</dt>
+                <dd id="manifestNet">niets door dit stuk.</dd>
+              </div>
+            </dl>
+          </div>
+        </details>
+      </section>
+
+      <footer class="colophon">
+        <p class="footer-system" id="footerSystem"></p>
+        <div class="correction">
+          <p class="was"><span class="tag">versie 2 zei</span> <del>Dit stuk registreert anoniem welke segmenten je las en wat je typte als reactie, als onderdeel van artistiek onderzoek. Er worden geen persoonlijke gegevens opgeslagen.</del></p>
+          <p class="is"><span class="tag">correctie</span> Dit stuk verstuurt niets. Wat het meet, blijft in dit tabblad en is weg zodra je het sluit. Alleen het laden van de pagina gaat via GitHub Pages.</p>
+        </div>
+        <p class="credit">Frictie als vorm, Aiman Hassani, 2026<br>
+        <span class="credit-sub">Met steun van het Stimuleringsfonds Creatieve Industrie</span></p>
+        <p class="versions">versie 4 · 14 november 2026 · <a href="../v3/">versie 3</a> · <a href="../v2/">versie 2</a> · <a href="../CHANGELOG.html">wat er veranderde</a></p>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- Knoppen onder elke alinea, behalve de laatste -->
+  <template id="tplUI">
+    <div class="segment-ui">
+      <button type="button" class="ui-heart" aria-label="Vind ik leuk" aria-pressed="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-heart"/></svg><span class="heart-count">0</span></button>
+      <button type="button" class="ui-comment" aria-label="Reageren" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-comment"/></svg></button>
+      <button type="button" class="ui-share" aria-label="Delen"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-share"/></svg><span class="ui-err">niet deelbaar</span></button>
+      <button type="button" class="ui-save" aria-label="Opslaan"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#i-save"/></svg><span class="ui-err">niet op te slaan</span></button>
+    </div>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>

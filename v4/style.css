@@ -1,0 +1,1298 @@
+/* Frictie als Vorm, scrollverhaal versie 4 */
+
+/*
+  VIER REGISTERS
+  1. platform   intro en knoppen: DM Sans, wit chroom. Ziet eruit als een post.
+  2. essay      de alinea's: Instrument Serif, warm creme. Iemand schreef dit.
+  3. machine    simulatie: IBM Plex Mono in amber. Verzonnen platformtaal, als simulatie gelabeld.
+  4. correctie  gemeten: IBM Plex Mono in creme. Wat er bij deze lezing echt gebeurde.
+
+  Het creme van het essay keert terug in de meting: de correctie staat aan de kant van de tekst,
+  niet aan de kant van het platform. Versie 2 kende de eerste drie registers.
+
+  Lettertypes staan naast deze pagina (SIL Open Font License, zie fonts/), alleen de Latijnse
+  tekenset. Andere tekens vallen terug op de lettertypes van het toestel, zonder netwerkverzoek.
+*/
+
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/instrumentserif-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/instrumentserif-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('fonts/dmsans-latin-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/plexmono-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/plexmono-500-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --bg: #f2ece3;
+  --text: #1a1814;
+  --text-muted: #6b6360;
+  --platform-bg: #ffffff;
+  --platform-border: #dbdbdb;
+  --platform-text: #262626;
+  --platform-muted: #737373;
+  --border: #d8d0c8;
+
+  --ghost: #b5a07a;
+  --ghost-light: #d8c59f;
+  --ghost-border: #8a7a5a;
+  --ground: #0d0c0b;
+  --ground-border: #1e1c19;
+  --void: #000000;
+
+  --cream: #f2ece3;
+  --cream-dim: #c9c1b4;
+  --ash: #8a8378;
+
+  --ig-gradient: linear-gradient(90deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+
+  --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  --nav-h: 48px;
+  --measure: 34rem;
+  --gutter: 20px;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* Het script houdt de tekst zelf op zijn plek wanneer een spoor langer is dan zijn alinea.
+     Ankeren door de browser staat uit, zodat er niet twee keer wordt gecorrigeerd. */
+  overflow-anchor: none;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--nav-h) + 20px);
+}
+
+body {
+  overflow-anchor: none;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* De route naar de hele tekst, alleen voor toetsenbord en schermlezer. Wie scrolt, ziet hem niet:
+   het stuk dwingt je naar beneden, en de hele tekst staat pas na het einde. */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  padding: 10px 14px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--cream);
+  background: var(--void);
+  border-radius: 4px;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: none;
+  outline: 2px solid var(--ghost);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* ---- PLATFORMCHROOM ---- */
+.platform-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-h);
+  background: #fff;
+  border-bottom: 1px solid var(--platform-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 100;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.nav-left,
+.nav-right {
+  width: 84px;
+}
+
+.nav-center {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-tab {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(38, 38, 38, 0.45);
+  padding: 4px 0;
+  position: relative;
+}
+
+.nav-tab-active {
+  color: var(--platform-text);
+  font-weight: 700;
+}
+
+.nav-tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--platform-text);
+  border-radius: 2px;
+}
+
+/* Vier alinea's weg: alleen "Volgend" breekt. Het chroom blijft wit. */
+.platform-nav.glitching #tabVolgend {
+  color: var(--ghost);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.nav-btn {
+  display: flex;
+  color: var(--platform-text);
+}
+
+/* ---- VOORTGANG ---- */
+.progress {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  right: 0;
+  z-index: 99;
+  pointer-events: none;
+}
+
+.progress-track {
+  height: 3px;
+  background: #eee;
+  transition: background 0.5s ease;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--ig-gradient);
+  transition: width 0.4s ease, opacity 1s ease;
+}
+
+/* Meer dan de helft weg: het vrolijke verloop kan niet meer optreden. */
+.progress-bar.bar-fading {
+  opacity: 0.35;
+}
+
+.progress-label {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  background: rgba(242, 236, 227, 0.9);
+  padding: 4px 7px;
+  border-radius: 3px;
+  transition: color 0.5s ease, background 0.5s ease;
+}
+
+body.low .progress-label {
+  color: #7d6b45;
+}
+
+/* ---- INTRO: een gewone post ---- */
+.intro {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 24px 40px;
+  background: var(--platform-bg);
+  border-bottom: 1px solid var(--platform-border);
+}
+
+.intro-inner {
+  max-width: 480px;
+  width: 100%;
+}
+
+.intro-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--platform-muted);
+  margin-bottom: 10px;
+}
+
+.intro-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ig-gradient);
+  flex-shrink: 0;
+}
+
+.intro-author {
+  font-weight: 600;
+  color: var(--platform-text);
+}
+
+.intro-dot {
+  color: #c7c7c7;
+}
+
+.intro-caption {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--platform-text);
+  letter-spacing: -0.012em;
+  margin-bottom: 4px;
+}
+
+.intro-caption:focus {
+  outline: none;
+}
+
+.intro-more-link {
+  background: none;
+  border: 0;
+  padding: 2px 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--platform-muted);
+  cursor: pointer;
+}
+
+.intro-more-link:hover {
+  color: #444;
+}
+
+.scroll-indicator {
+  color: #8e8e8e;
+  margin-top: auto;
+  padding-bottom: 24px;
+  animation: bounce 2s ease-in-out infinite;
+  transition: opacity 0.5s ease;
+}
+
+.scroll-indicator.gone {
+  opacity: 0;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+}
+
+/* ---- DE FEED ---- */
+.feed {
+  max-width: calc(var(--measure) + 2 * var(--gutter));
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.segment {
+  position: relative;
+  padding: 40px 0 34px;
+  border-bottom: 1px solid var(--border);
+}
+
+.segment-content {
+  position: relative;
+  transition: opacity 0.8s ease, filter 0.8s ease;
+}
+
+/* Essay: een stem die weigert caption te zijn. Op de telefoon minstens 20 px. */
+.segment-content p {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 1.12rem + 0.75vw, 1.6rem);
+  line-height: 1.5;
+  letter-spacing: -0.003em;
+  color: var(--text);
+  text-wrap: pretty;
+  hanging-punctuation: first;
+}
+
+.segment-final .segment-content p {
+  font-style: italic;
+}
+
+/* ---- KNOPPEN ---- */
+.segment-ui {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 10px -11px 0;
+}
+
+.segment-ui button {
+  background: none;
+  border: none;
+  color: var(--platform-text);
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: opacity 0.2s ease, transform 0.1s ease, color 1.5s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.segment-ui button:hover {
+  opacity: 0.6;
+}
+
+.segment-ui button:active {
+  transform: scale(0.92);
+}
+
+.ui-save {
+  margin-left: auto;
+}
+
+.ui-heart.liked svg {
+  fill: #ed4956;
+  stroke: #ed4956;
+}
+
+.heart-count {
+  font-size: 0.78rem;
+  color: var(--platform-muted);
+  min-width: 12px;
+}
+
+.ui-err {
+  display: none;
+  font-size: 0.72rem;
+}
+
+.ui-share.share-failed svg,
+.ui-save.save-failed svg {
+  display: none;
+}
+
+.ui-share.share-failed,
+.ui-save.save-failed {
+  cursor: default;
+  pointer-events: none;
+  color: #8a7a5a;
+}
+
+.ui-share.share-failed .ui-err,
+.ui-save.save-failed .ui-err {
+  display: inline;
+}
+
+/* Na een poging is de mogelijkheid weg. */
+.ui-comment.comment-done {
+  display: none;
+}
+
+/* ---- REACTIE ---- */
+.comment-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.comment-field {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  font-family: var(--sans);
+  font-size: 1rem;
+  color: var(--text);
+  -webkit-text-fill-color: var(--text);
+  padding: 6px 0;
+  caret-color: var(--text);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.comment-field:focus {
+  outline: none;
+  border-bottom-color: currentColor;
+}
+
+.comment-field::placeholder {
+  color: var(--text-muted);
+  -webkit-text-fill-color: var(--text-muted);
+}
+
+.comment-send {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.comment-send:hover {
+  color: var(--text);
+}
+
+/* Even, in jouw register: jij schreef het. */
+.comment-bubble {
+  margin-top: 10px;
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+}
+
+.comment-bubble:focus,
+.comment-ghost:focus {
+  outline: none;
+}
+
+/* Het bonnetje van het platform, en de correctie eronder. */
+.comment-ghost,
+.comment-correction {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+.comment-ghost {
+  margin-top: 10px;
+  color: #8a7a5a;
+}
+
+.comment-correction {
+  margin-top: 2px;
+  color: var(--text);
+}
+
+body.is-dark .comment-ghost {
+  color: var(--ghost);
+}
+
+body.is-dark .comment-correction {
+  color: var(--cream);
+}
+
+/* ---- VERVAGEN ---- */
+.segment.dissolving .segment-content {
+  opacity: 0.2;
+  filter: blur(2px);
+}
+
+.segment.dissolving .segment-ui {
+  opacity: 0.2;
+}
+
+/* ---- OVERSCHRIJVEN ---- */
+.segment.scrambling {
+  overflow: hidden;
+}
+
+.segment.scrambling .segment-content p {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #999;
+  letter-spacing: 0.03em;
+}
+
+/* ---- GEWIST: de band met het spoor ---- */
+.segment.dissolved {
+  background: var(--ground);
+  border-bottom-color: var(--ground-border);
+  margin-inline: calc(-1 * var(--gutter));
+  padding: 26px var(--gutter) 30px;
+}
+
+.segment.dissolved .segment-content,
+.segment.dissolved .segment-ui,
+.segment.dissolved .comment-input-wrap,
+.segment.dissolved .comment-bubble,
+.segment.dissolved .comment-ghost,
+.segment.dissolved .comment-correction {
+  display: none;
+}
+
+.segment-ghost {
+  display: grid;
+  gap: 22px;
+  align-content: start;
+  animation: ghost-appear 0.5s ease-out;
+}
+
+.segment-ghost:focus {
+  outline: none;
+}
+
+.segment-ghost:focus-visible {
+  outline: 1px solid var(--cream-dim);
+  outline-offset: 6px;
+}
+
+/* Data verschijnt niet dramatisch. Ze is er gewoon. */
+@keyframes ghost-appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.trace {
+  min-width: 0;
+  padding-left: 14px;
+}
+
+.trace-sim {
+  color: var(--ghost);
+  border-left: 1px solid var(--ghost-border);
+}
+
+.trace-real {
+  color: var(--cream);
+  border-left: 1px solid rgba(242, 236, 227, 0.45);
+}
+
+.trace-tag {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-bottom: 12px;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+}
+
+.tag-name {
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 2px 6px 1px 7px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+}
+
+.tag-note {
+  opacity: 0.85;
+}
+
+.trace-log {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--ghost);
+}
+
+/* De //-regels zijn de enige menselijke zinnen in het log. */
+.log-comment {
+  color: var(--ghost-light);
+}
+
+.log-line[lang='ar'] {
+  font-family: 'Geeza Pro', 'Noto Naskh Arabic', 'Segoe UI', Tahoma, sans-serif;
+  font-size: 1.12em;
+  unicode-bidi: isolate;
+}
+
+/* Segment 6 (de zevende alinea, de moeder): zelfde kleur, iets groter. Hier viel meer te verliezen. */
+.segment[data-segment='6'] .trace-log {
+  font-size: 0.78rem;
+}
+
+.trace-data {
+  font-family: var(--mono);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.trace-data > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 6px 0;
+  border-bottom: 1px dotted rgba(242, 236, 227, 0.18);
+}
+
+.trace-data > div:last-child {
+  border-bottom: 0;
+}
+
+.trace-data dt {
+  color: var(--cream-dim);
+}
+
+.trace-data dd {
+  color: var(--cream);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* De laatste alinea: het systeem heeft geen eigen taal meer, alleen de meting blijft. */
+.segment-final.dissolved {
+  background: var(--void);
+  border-bottom-color: var(--void);
+}
+
+.segment-final .segment-ghost {
+  max-width: 20rem;
+  margin-inline: auto;
+}
+
+/* Breed scherm: de band wordt breder dan de tekst. Simulatie links, meting ernaast. */
+@media (min-width: 900px) {
+  .segment.dissolved {
+    margin-inline: calc((100% - min(48rem, 100vw - 64px)) / 2);
+    padding: 30px 32px 34px;
+  }
+
+  .segment-ghost {
+    grid-template-columns: minmax(0, 1fr) minmax(13rem, 15rem);
+    column-gap: 36px;
+  }
+
+  .segment-final .segment-ghost {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---- NA DE FEED ---- */
+/* Minstens een scherm hoog: zo kan ook de laatste alinea de regel volgen. */
+.after {
+  background: var(--void);
+  color: var(--cream);
+  min-height: 100vh;
+  min-height: 100lvh;
+  padding: clamp(64px, 12vh, 140px) var(--gutter) 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+}
+
+.endcard {
+  display: grid;
+  justify-items: center;
+  gap: 36px;
+  text-align: center;
+}
+
+/* Het slotspoor uit versie 2, woord voor woord. Nu leesbaar van contrast. */
+.farewell {
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 2.3;
+  letter-spacing: 0.02em;
+  color: rgba(242, 236, 227, 0.8);
+  white-space: pre-line;
+  /* De plek is er vanaf het begin, onzichtbaar: als het slotspoor komt, verspringt er niets. */
+  visibility: hidden;
+}
+
+.farewell.shown {
+  visibility: visible;
+  animation: final-appear 2.5s ease-out;
+}
+
+/* De meting naast het slotspoor: "gelezen" meet niemand. */
+.farewell-correction {
+  margin-top: -14px;
+  max-width: 26rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--cream-dim);
+  padding-left: 12px;
+  border-left: 1px solid rgba(242, 236, 227, 0.45);
+  text-align: left;
+  visibility: hidden;
+}
+
+.farewell-correction.shown {
+  visibility: visible;
+  animation: final-appear 3s ease-out;
+}
+
+@keyframes final-appear {
+  0% {
+    opacity: 0;
+  }
+  55% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.footer-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 10px;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: #a59d91;
+}
+
+.stat-num {
+  color: var(--ghost);
+  font-weight: 500;
+}
+
+.stat-sep {
+  color: #4a4640;
+}
+
+/* ---- ARCHIEF ---- */
+.archive {
+  width: min(100%, var(--measure));
+}
+
+.archive-box > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: fit-content;
+  margin-inline: auto;
+  padding: 13px 22px;
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--cream);
+  border: 1px solid rgba(242, 236, 227, 0.4);
+  border-radius: 999px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.archive-box > summary::-webkit-details-marker {
+  display: none;
+}
+
+.archive-box > summary::before {
+  content: '';
+  flex: none;
+  width: 11px;
+  height: 11px;
+  color: var(--ghost);
+  background:
+    linear-gradient(currentColor, currentColor) center / 100% 1.5px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 1.5px 100% no-repeat;
+  transition: transform 0.2s ease;
+}
+
+.archive-box[open] > summary::before {
+  transform: rotate(45deg);
+}
+
+.archive-box > summary:hover {
+  border-color: var(--cream);
+  background: rgba(242, 236, 227, 0.06);
+}
+
+.archive-box > summary:focus-visible {
+  outline: 2px solid var(--cream);
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+
+.archive-body {
+  margin-top: 40px;
+}
+
+.archive-rule {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  line-height: 1.7;
+  color: var(--cream-dim);
+  padding-left: 14px;
+  border-left: 1px solid var(--ghost-border);
+}
+
+.archive-list {
+  list-style: none;
+  counter-reset: arch;
+  margin-top: 40px;
+  display: grid;
+  gap: 36px;
+}
+
+.arch-item {
+  counter-increment: arch;
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr);
+  column-gap: 10px;
+}
+
+.arch-item::before {
+  content: counter(arch, decimal-leading-zero);
+  grid-row: span 2;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 2.6;
+  color: var(--ghost);
+}
+
+.arch-text {
+  font-family: var(--serif);
+  font-size: clamp(1.22rem, 1.06rem + 0.6vw, 1.45rem);
+  line-height: 1.5;
+  color: var(--cream);
+  text-wrap: pretty;
+}
+
+.arch-final {
+  font-style: italic;
+}
+
+.arch-trace {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--cream-dim);
+}
+
+.manifest {
+  margin-top: 48px;
+  padding-top: 22px;
+  border-top: 1px solid #2a2722;
+  display: grid;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  line-height: 1.6;
+}
+
+.manifest > div {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  gap: 12px;
+}
+
+.manifest dt {
+  color: var(--ghost);
+}
+
+.manifest dd {
+  color: var(--cream);
+}
+
+/* ---- COLOFON ---- */
+.colophon {
+  width: min(100%, var(--measure));
+  display: grid;
+  gap: 24px;
+  text-align: center;
+}
+
+.footer-system {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  line-height: 1.7;
+  color: var(--ash);
+  overflow-wrap: anywhere;
+}
+
+/* De fout van versie 2 blijft staan, doorgestreept. De correctie staat ernaast. */
+.correction {
+  display: grid;
+  gap: 12px;
+  text-align: left;
+  padding: 20px 0 0;
+  border-top: 1px solid #2a2722;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.correction .tag {
+  display: inline-block;
+  margin-right: 8px;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ghost);
+}
+
+.correction del {
+  color: var(--ash);
+  text-decoration-line: line-through;
+  text-decoration-color: var(--ghost);
+  text-decoration-thickness: 1px;
+}
+
+.correction .is {
+  color: var(--cream);
+}
+
+.credit {
+  font-size: 0.78rem;
+  line-height: 1.8;
+  color: #a59d91;
+}
+
+.credit-sub {
+  font-size: 0.7rem;
+  color: var(--ash);
+}
+
+.versions {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  line-height: 1.7;
+  color: var(--ash);
+}
+
+.after a {
+  color: var(--cream);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.after a:hover {
+  color: var(--ghost-light);
+}
+
+/* ---- FLITS BIJ HET WISSEN ---- */
+.glitch-flash {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 998;
+  animation: flash 0.12s ease-out forwards;
+}
+
+@keyframes flash {
+  0% {
+    background: rgba(181, 160, 122, 0.1);
+  }
+  50% {
+    background: rgba(13, 12, 11, 0.03);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+/* ---- HET DONKER WORDT DIEPER ---- */
+/* Begint bij warm creme, niet bij wit. Meer afstand om te vallen. */
+body.darkening {
+  transition: background 2s ease;
+}
+
+body[data-dark='2'] { background: #e8e0d5; }
+body[data-dark='3'] { background: #d4c9be; }
+body[data-dark='4'] { background: #403e3b; transition: background 1.5s ease; }
+body[data-dark='5'] { background: #282622; }
+body[data-dark='6'] { background: #18160f; }
+body[data-dark='7'] { background: #100e0a; }
+body[data-dark='8'],
+body[data-dark='9'] { background: var(--ground); }
+/* Alles weg: ook de laatste warmte gaat. De sporen blijven net iets lichter dan de leegte. */
+body[data-dark='10'] { background: var(--void); }
+
+body.darkening .segment:not(.dissolved) .segment-content p {
+  transition: color 1.5s ease;
+}
+
+body[data-dark='4'] .segment:not(.dissolved) .segment-content p,
+body[data-dark='5'] .segment:not(.dissolved) .segment-content p { color: #b3aca2; }
+body[data-dark='6'] .segment:not(.dissolved) .segment-content p,
+body[data-dark='7'] .segment:not(.dissolved) .segment-content p { color: #a39c92; }
+body[data-dark='8'] .segment:not(.dissolved) .segment-content p,
+body[data-dark='9'] .segment:not(.dissolved) .segment-content p,
+body[data-dark='10'] .segment:not(.dissolved) .segment-content p { color: #d2cbc0; }
+
+body.is-dark .segment:not(.dissolved) {
+  border-bottom-color: #333;
+}
+
+body.is-dark .segment-ui button {
+  color: #8f877b;
+}
+
+body.is-dark .heart-count {
+  color: #8f877b;
+}
+
+body.is-dark .ui-share.share-failed,
+body.is-dark .ui-save.save-failed {
+  color: var(--ghost);
+}
+
+body.is-dark .comment-field {
+  color: #d2cbc0;
+  -webkit-text-fill-color: #d2cbc0;
+  caret-color: #d2cbc0;
+  border-bottom-color: #4a4640;
+}
+
+body.is-dark .comment-field::placeholder {
+  color: var(--ash);
+  -webkit-text-fill-color: var(--ash);
+}
+
+body.is-dark .comment-bubble {
+  color: #b3aca2;
+  border-left-color: #4a4640;
+}
+
+body.is-dark .intro {
+  background: #111;
+  border-bottom-color: #333;
+  transition: background 1.5s ease;
+}
+
+body.is-dark .intro-caption {
+  color: #ccc;
+}
+
+body.is-dark .intro-author {
+  color: #ddd;
+}
+
+body.is-dark .intro-meta,
+body.is-dark .intro-more-link {
+  color: var(--ash);
+}
+
+body.is-dark .progress-track {
+  background: #222;
+}
+
+body.is-dark .progress-label {
+  color: var(--ash);
+  background: rgba(13, 12, 11, 0.88);
+}
+
+body.is-dark.low .progress-label {
+  color: var(--ghost);
+}
+
+/* ---- MINDER BEWEGING ---- */
+/* Dezelfde regel, zonder beweging: niets schuift, flitst of knippert. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  .segment.dissolving .segment-content {
+    opacity: 0.4;
+    filter: none;
+  }
+
+  .segment.dissolving .segment-ui {
+    opacity: 0.4;
+  }
+}
+
+/* ---- HOOG CONTRAST ---- */
+@media (forced-colors: active) {
+  .segment.dissolved,
+  .after {
+    border: 1px solid CanvasText;
+  }
+
+  .tag-name,
+  .archive-box > summary {
+    border-color: CanvasText;
+  }
+
+  .progress-bar {
+    forced-color-adjust: none;
+    background: Highlight;
+  }
+}
+
+/* ---- KLEIN SCHERM ---- */
+@media (max-width: 600px) {
+  .platform-nav {
+    padding: 0 12px;
+  }
+
+  .nav-left,
+  .nav-right {
+    width: 72px;
+  }
+
+  .nav-right {
+    gap: 10px;
+  }
+
+  .nav-tab {
+    font-size: 0.82rem;
+  }
+
+  .manifest > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  .after {
+    gap: 56px;
+  }
+
+  .segment.dissolved {
+    padding: 22px var(--gutter) 24px;
+  }
+
+  .segment-ghost {
+    gap: 18px;
+  }
+
+  .trace-tag {
+    margin-bottom: 9px;
+  }
+
+  .trace-log {
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
+
+  .trace-data > div {
+    padding: 4px 0;
+  }
+}
