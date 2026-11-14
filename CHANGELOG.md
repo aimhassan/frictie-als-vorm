@@ -18,7 +18,7 @@ Van platformparodie naar counter-archief: het stuk houdt de fout en schrijft de 
 - **Glitch.** De tekenvervanging blijft: het systeem schrijft over de tekst heen. De rood-blauwe beeldsplitsing is eruit; dat was decor, geen regel.
 - **"lees meer"** klapt de caption nu echt uit, met de rest van de eerste alinea.
 
-Getest met een Playwright-script (in de P-22-map: `talk/demo/test_scroll_versions.py`), lokaal en op de live site, op 9 schermformaten van 320 tot 2560 pixels breed en met reduced motion: overal worden alle tien alinea's gewist, eindigt de teller op 0% beschikbaar en komt het slotspoor in beeld; geen netwerkverzoeken na het laden en geen verzoeken naar andere sites.
+Getest met een Playwright-script dat in deze repo staat (`_tests/test_scroll_versions.py`; het draait lokaal en tegen de live site), lokaal en op de live site, op 9 schermformaten van 320 tot 2560 pixels breed en met reduced motion: overal worden alle tien alinea's gewist, eindigt de teller op 0% beschikbaar en komt het slotspoor in beeld; geen netwerkverzoeken na het laden en geen verzoeken naar andere sites.
 
 ### Na de review van p22-worker (13 november, avond)
 
@@ -28,7 +28,9 @@ p22-worker toetste de eerste publicatie van versie 3 (commit 37a1fa2) aan de con
 - **Springen wist niet meer.** Alleen wat op je scherm heeft gestaan, kan verdwijnen. Wie via "Hele tekst bekijken" naar het archief gaat, laat de feed heel. Terugscrollen voordat een alinea de lijn passeert, haalt hem nog even terug.
 - **Preciezere privacyzinnen.** "Dit stuk registreert niets" was te absoluut: het stuk meet wel, alleen in het tabblad. De correctie in de footer luidt nu: "Dit stuk verstuurt niets. Wat het meet, blijft in dit tabblad en is weg zodra je het sluit. Alleen het laden van de pagina gaat via GitHub Pages."
 - **Het slotspoor staat er weer woord voor woord**, met "segmenten gelezen: 10". Lezen meet niemand, dus staat de meting eronder: "gemeten: 10 van 10 alinea's stonden op je scherm. of je ze las, meet niemand."
-- **Het archief heet nu** "De hele tekst, met de sporen van dit scherm", en elk spoor daar begint met "gemeten:".
+- **Het archief heet nu** "De hele tekst, met de sporen van dit scherm". Bij een gewiste alinea begint het spoor daar met "gemeten:"; een alinea die nog in de feed staat, toont "nog in de feed" en haar aantal woorden.
+
+p22-worker hercheckte versie 3 op 14 november (kaart t_6dbbbbe2): akkoord op de simulatielabels, het moeder-log volgens Aimans besluit, de metingen en privacyzinnen, de archiefroute, de footercorrectie en het slotspoor met de meting eronder. De laatste restfout zat in deze changelog (de beschrijving van de archiefsporen) en is daarna verbeterd.
 
 ### Besluiten van Aiman
 
