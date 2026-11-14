@@ -6,7 +6,7 @@ Elke versie blijft te zien op een eigen adres. Sinds 14 november is de hoofdpagi
 
 Adres: https://aimhassan.github.io/frictie-als-vorm/v4/
 
-- **Nieuwe teksten.** Alle tien alinea's zijn opnieuw geschreven, dichter bij Aimans eigen stem: ik, korte zinnen, iets concreets, en een landing in plaats van een slotsom. Samen 243 woorden, was ongeveer 500. Alinea 03 gebruikt zijn eigen zinnen over zijn film Bliksem; alinea 05 is zijn eigen statement over frictie, in het Nederlands.
+- **Nieuwe teksten.** Alle tien alinea's zijn opnieuw geschreven, dichter bij Aimans eigen stem: ik, korte zinnen, iets concreets, en een landing in plaats van een slotsom. Samen 243 woorden, was ongeveer 500. Alinea 03 gebruikt zijn eigen zinnen over zijn film Bliksem; alinea 05 is zijn eigen statement over frictie, in het Nederlands; alinea 08 begint met een zin uit zijn eigen notities.
 - **Het platformlog** volgt de nieuwe alinea's; een paar regels zijn kaler gemaakt. Het log bij de moeder-alinea staat er zoals Aiman besloot.
 - **Het slotspoor** herhaalt de laatste alinea niet meer, en de meting eronder is kaal: "gemeten: 10 van 10 alinea's op je scherm. gelezen: niet te meten."
 - Verder werkt alles als in versie 3, getest met hetzelfde script op 9 schermformaten en met reduced motion. De hoofdpagina blijft versie 3 tot Aiman kiest.
