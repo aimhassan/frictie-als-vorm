@@ -1,6 +1,6 @@
 # Frictie als vorm: versies
 
-Elke versie blijft te zien op een eigen adres. De hoofdpagina, https://aimhassan.github.io/frictie-als-vorm/, blijft versie 2 tot Aiman een nieuwe versie kiest. Die hoofdpagina is ook het doel van de QR-code in de NADD-talk.
+Elke versie blijft te zien op een eigen adres. Sinds 14 november is de hoofdpagina, https://aimhassan.github.io/frictie-als-vorm/, versie 3: dat koos Aiman. Die hoofdpagina is ook het doel van de QR-code in de NADD-talk. De hoofdpagina gebruikt de bestanden uit /v3/; alleen index.html staat er apart, met aangepaste paden.
 
 ## Versie 3, 13 november 2026
 
@@ -36,6 +36,7 @@ p22-worker hercheckte versie 3 op 14 november (kaart t_6dbbbbe2): akkoord op de 
 
 - 14 november: de Arabische vraag en "// geen antwoord beschikbaar." bij de moeder-alinea blijven staan.
 - 14 november: "I dont mind any fiction elements if they are to strengthen the story." Fictie die het verhaal sterker maakt, mag dus, ook in het log bij de moeder-alinea. In versie 3 staat die fictie gelabeld als simulatie. Wat de pagina zegt over lezers en hun gegevens, blijft feitelijk: dat is geen verhaal maar een belofte.
+- 14 november: versie 3 wordt de hoofdpagina, en daarmee ook het adres achter de QR-code in de NADD-talk. Versie 2 blijft te zien op /v2/.
 
 ### Nieuwe zinnen in versie 3, nog niet door Aiman goedgekeurd
 
@@ -51,7 +52,7 @@ Zijn alinea's, het slotspoor en de //-regels staan er woord voor woord. Deze zin
 
 ## Versie 2, 17 mei 2026
 
-Adres: https://aimhassan.github.io/frictie-als-vorm/v2/ (en voorlopig ook de hoofdpagina)
+Adres: https://aimhassan.github.io/frictie-als-vorm/v2/ (tot 14 november ook de hoofdpagina)
 
 De versie die sinds 17 mei live staat. In de code heet ze `scrollverhaal_v3` en de stylesheet noemt zich v4. Ongewijzigd bewaard, met wat versie 3 corrigeert:
 
