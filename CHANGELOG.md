@@ -2,6 +2,21 @@
 
 Elke versie blijft te zien op een eigen adres. Sinds 14 november is de hoofdpagina, https://aimhassan.github.io/frictie-als-vorm/, versie 3: dat koos Aiman. Die hoofdpagina is ook het doel van de QR-code in de NADD-talk. De hoofdpagina gebruikt de bestanden uit /v3/; alleen index.html staat er apart, met aangepaste paden.
 
+## Versie 5, 14 november 2026
+
+Adres: https://aimhassan.github.io/frictie-als-vorm/v5/
+
+Na Aimans feedback op versie 4:
+
+- **Een post per scherm.** Elke alinea vult het scherm, zoals in een feed: grote tekst in het midden, de knoppen in een kolom rechts, onderaan @aimanhassani en een teller (01/10), zodat je ziet waar je bent. Elke veeg of scrollstap gaat naar de volgende post. Bij minder beweging (reduced motion) staat het vastklikken uit.
+- **Geen herhaling bovenaan.** De aparte post met caption en "lees meer" is weg; het stuk begint meteen bij de eerste alinea.
+- **Alinea 04 herschreven**, zodat ze klopt: "Als ik een video post, zie ik daarna hoe lang mensen kijken. De meesten zijn na een paar seconden weg. Ik merk dat ik sneller ga praten. Alsof ik solliciteer."
+- **Alinea 07:** zijn moeder praat Marokkaans en Nederlands door elkaar. Het log eronder zegt dat de taal binnen een zin wisselt.
+- **"scroll" met dubbele l**, zoals Aiman het schrijft.
+- De regel kijkt nu naar de tekst in de post, niet naar de lege ruimte eromheen. Verder werkt alles als in versie 4; getest op 9 schermformaten en met reduced motion. De hoofdpagina blijft versie 3 tot Aiman kiest.
+
+Nieuw in versie 5 en nog niet door Aiman goedgekeurd: alinea 04 en de logregels bij 04 en 07.
+
 ## Versie 4, 14 november 2026
 
 Adres: https://aimhassan.github.io/frictie-als-vorm/v4/

@@ -179,9 +179,13 @@ def comment_and_focus(browser, base):
     page.focus('.segment[data-segment="1"] .ui-heart')
     page.keyboard.press('Enter')
     pressed = page.get_attribute('.segment[data-segment="1"] .ui-heart', 'aria-pressed')
-    target = page.evaluate("() => { const s = document.querySelector('.segment[data-segment=\"1\"]'); return s.getBoundingClientRect().bottom + scrollY - innerHeight * 0.2; }")
-    page.evaluate(f'window.scrollTo(0, {target})')
-    page.wait_for_timeout(1500)
+    # Scroll on with the keyboard, the way a keyboard user does, until segment 1 is erased.
+    for _ in range(40):
+        if page.evaluate("() => document.querySelector('.segment[data-segment=\"1\"]').classList.contains('dissolved')"):
+            break
+        page.keyboard.press('ArrowDown')
+        page.wait_for_timeout(250)
+    page.wait_for_timeout(800)
     focus_after_erase = page.evaluate("() => ({cls: document.activeElement.className, seg: document.activeElement.closest('.segment') ? document.activeElement.closest('.segment').dataset.segment : null})")
     seg0_trace = page.evaluate("() => [...document.querySelectorAll('.segment[data-segment=\"0\"] .trace-data > div')].map(d => d.textContent)")
     aria_seg1 = page.locator('.segment[data-segment="1"]').aria_snapshot()
@@ -216,10 +220,12 @@ def route(browser, base):
     })""")
     page.screenshot(path=os.path.join(OUT, 'phone_09_route.png'))
     aria_archive = page.locator('#archief').aria_snapshot()
+    caption = None
     page.goto(base + PATH, wait_until='load')
     page.wait_for_timeout(300)
-    page.click('#moreBtn')
-    caption = page.text_content('#caption')
+    if page.query_selector('#moreBtn') is not None:
+        page.click('#moreBtn')
+        caption = page.text_content('#caption')
     ctx.close()
     return {'link_hidden_before_tab': before_tab['bottom'] <= 0, 'first_tab_focus': first_focus,
             'link_visible_on_tab': on_tab['top'] >= 0, 'caption_expanded': caption, 'state': st, **res,
