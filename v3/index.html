@@ -19,6 +19,10 @@
 </head>
 <body>
 
+  <!-- Voor schermlezers en toetsenbord: de hele tekst, zonder wissen. Onzichtbaar tot je met Tab op
+       deze link komt. Wie scrolt, wordt naar beneden gedwongen en vindt de hele tekst na het einde. -->
+  <a class="skip-link" id="routeLink" href="#archief">Naar de hele tekst</a>
+
   <svg class="sprite" aria-hidden="true" focusable="false">
     <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></symbol>
     <symbol id="i-comment" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
@@ -63,8 +67,6 @@
       </p>
       <p class="intro-caption" id="caption" tabindex="-1">Je kent dit format. Je hebt het duizend keer gezien. Iemand begint te praten, de caption is drie regels, je scrollt door.<span id="captionRest" hidden> Het algoritme zegt: deze persoon is 6,2 seconden je aandacht waard. Daarna: volgende.</span></p>
       <p class="intro-more"><button type="button" class="intro-more-link" id="moreBtn" aria-expanded="false" aria-controls="captionRest">lees meer</button></p>
-      <!-- Leesroute die niets wist: zoals "Vertaling bekijken" onder een post -->
-      <p class="intro-route"><a class="route-link" id="routeLink" href="#archief">Hele tekst bekijken</a></p>
     </div>
     <div class="scroll-indicator" id="scrollIndicator" aria-hidden="true">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chevron"/></svg>

@@ -14,7 +14,7 @@ Van platformparodie naar counter-archief: het stuk houdt de fout en schrijft de 
 - **Een einde dat op elk scherm klopt.** Na de feed volgt minstens een scherm ruimte, zodat ook de laatste alinea dezelfde regel volgt. Het slotspoor uit versie 2 staat woord voor woord direct onder de feed, zodat het op elk scherm in beeld komt, met de meting eronder. Versie 2 eindigde op 7 tot 9 van de 10 gewiste alinea's, afhankelijk van het scherm.
 - **De regel is uit te leggen.** Een alinea die op je scherm heeft gestaan, vervaagt zodra je verder scrolt en de onderkant de helft van je scherm passeert, en wordt gewist zodra die het bovenste derde bereikt. Wat je overslaat, blijft staan. Dat staat ook in het archief.
 - **De tekst verspringt niet meer.** Het gewiste stuk houdt de maat van wat er stond. In versie 2 schoof de tekst onder de lezer op de telefoon tot 86 pixels op bij een wissing; in versie 3 hooguit 1.
-- **Toegang hoort bij het werk.** Grotere letter op de telefoon (ongeveer 21 in plaats van 14 pixels). Sporen zijn leesbaar voor schermlezers en elke wissing wordt gemeld. De focus blijft op zijn plek als de alinea eronder verdwijnt. "Hele tekst bekijken" onder de caption opent het archief: alle tien alinea's met hun gemeten sporen. Springen naar het archief wist niets. Bij minder beweging (reduced motion) werkt het hele stuk zonder animatie. Contrast verhoogd waar het te laag was.
+- **Toegang hoort bij het werk.** Grotere letter op de telefoon (ongeveer 21 in plaats van 14 pixels). Sporen zijn leesbaar voor schermlezers en elke wissing wordt gemeld. De focus blijft op zijn plek als de alinea eronder verdwijnt. Na het einde staat het archief: alle tien alinea's met hun gemeten sporen. Voor toetsenbord en schermlezer staat bovenaan een onzichtbare link naar dat archief; die verschijnt pas als je op Tab drukt, en springen wist niets. Bij minder beweging (reduced motion) werkt het hele stuk zonder animatie. Contrast verhoogd waar het te laag was.
 - **Glitch.** De tekenvervanging blijft: het systeem schrijft over de tekst heen. De rood-blauwe beeldsplitsing is eruit; dat was decor, geen regel.
 - **"lees meer"** klapt de caption nu echt uit, met de rest van de eerste alinea.
 
@@ -25,7 +25,7 @@ Getest met een Playwright-script dat in deze repo staat (`_tests/test_scroll_ver
 p22-worker toetste de eerste publicatie van versie 3 (commit 37a1fa2) aan de conceptbrief, op kaart t_e4604025. Wat daarna veranderde:
 
 - **De zevende alinea, over de moeder:** p22-worker adviseerde het hele verzonnen transcriptielog weg te halen (job-id voice_note_47, de foutstatus, de taalregel, de stilte van 1.8s, de LOST-regels en de Arabische vraag). Aiman besliste anders, zie hieronder. Het log staat er weer woord voor woord zoals in versie 2, gelabeld als simulatie.
-- **Springen wist niet meer.** Alleen wat op je scherm heeft gestaan, kan verdwijnen. Wie via "Hele tekst bekijken" naar het archief gaat, laat de feed heel. Terugscrollen voordat een alinea de lijn passeert, haalt hem nog even terug.
+- **Springen wist niet meer.** Alleen wat op je scherm heeft gestaan, kan verdwijnen. Wie via de link naar het archief springt, laat de feed heel. Terugscrollen voordat een alinea de lijn passeert, haalt hem nog even terug.
 - **Preciezere privacyzinnen.** "Dit stuk registreert niets" was te absoluut: het stuk meet wel, alleen in het tabblad. De correctie in de footer luidt nu: "Dit stuk verstuurt niets. Wat het meet, blijft in dit tabblad en is weg zodra je het sluit. Alleen het laden van de pagina gaat via GitHub Pages."
 - **Het slotspoor staat er weer woord voor woord**, met "segmenten gelezen: 10". Lezen meet niemand, dus staat de meting eronder: "gemeten: 10 van 10 alinea's stonden op je scherm. of je ze las, meet niemand."
 - **Het archief heet nu** "De hele tekst, met de sporen van dit scherm". Bij een gewiste alinea begint het spoor daar met "gemeten:"; een alinea die nog in de feed staat, toont "nog in de feed" en haar aantal woorden.
@@ -37,12 +37,13 @@ p22-worker hercheckte versie 3 op 14 november (kaart t_6dbbbbe2): akkoord op de 
 - 14 november: de Arabische vraag en "// geen antwoord beschikbaar." bij de moeder-alinea blijven staan.
 - 14 november: "I dont mind any fiction elements if they are to strengthen the story." Fictie die het verhaal sterker maakt, mag dus, ook in het log bij de moeder-alinea. In versie 3 staat die fictie gelabeld als simulatie. Wat de pagina zegt over lezers en hun gegevens, blijft feitelijk: dat is geen verhaal maar een belofte.
 - 14 november: versie 3 wordt de hoofdpagina, en daarmee ook het adres achter de QR-code in de NADD-talk. Versie 2 blijft te zien op /v2/.
+- 14 november: geen zichtbare knop "Hele tekst bekijken" bovenaan. Aiman: "its a scroll interface forcing u down". Iedereen moet dus naar beneden; de hele tekst staat pas na het einde. Alleen toetsenbord en schermlezer krijgen bovenaan een onzichtbare link naar het archief, zodat het stuk toegankelijk blijft.
 
 ### Nieuwe zinnen in versie 3, nog niet door Aiman goedgekeurd
 
 Zijn alinea's, het slotspoor en de //-regels staan er woord voor woord. Deze zinnen zijn nieuw en wachten op zijn stem:
 
-- onder de caption: "Hele tekst bekijken"
+- onzichtbare link voor toetsenbord en schermlezer: "Naar de hele tekst"
 - labels bij elk spoor: "simulatie: geen echt platformlog" en "gemeten: op dit toestel, niets verstuurd"
 - regels in het spoor: "op je scherm", "gewist op", "woorden", "reactie: ... tekens, niet verstuurd"
 - onder een reactie: "correctie: ook niet voor iemand anders. niets verstuurd."

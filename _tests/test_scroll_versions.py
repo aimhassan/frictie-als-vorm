@@ -197,9 +197,14 @@ def route(browser, base):
     ctx, page, log = context(browser, 390, 844, mobile=True)
     page.goto(base + PATH, wait_until='load')
     page.wait_for_timeout(400)
-    page.click('#moreBtn')
-    caption = page.text_content('#caption')
-    page.click('#routeLink')
+    # The route to the full text is for keyboard and screen reader only: invisible until Tab.
+    box = "() => { const r = document.getElementById('routeLink').getBoundingClientRect(); return {top: Math.round(r.top), bottom: Math.round(r.bottom)}; }"
+    before_tab = page.evaluate(box)
+    page.keyboard.press('Tab')
+    first_focus = page.evaluate('document.activeElement.id')
+    on_tab = page.evaluate(box)
+    page.screenshot(path=os.path.join(OUT, 'phone_09a_skiplink.png'))
+    page.keyboard.press('Enter')
     page.wait_for_timeout(2600)
     st = page.evaluate(STATE)
     res = page.evaluate("""() => ({
@@ -211,8 +216,14 @@ def route(browser, base):
     })""")
     page.screenshot(path=os.path.join(OUT, 'phone_09_route.png'))
     aria_archive = page.locator('#archief').aria_snapshot()
+    page.goto(base + PATH, wait_until='load')
+    page.wait_for_timeout(300)
+    page.click('#moreBtn')
+    caption = page.text_content('#caption')
     ctx.close()
-    return {'caption_expanded': caption, 'state': st, **res, 'aria_archive_head': aria_archive[:900], 'errors': log['errors']}
+    return {'link_hidden_before_tab': before_tab['bottom'] <= 0, 'first_tab_focus': first_focus,
+            'link_visible_on_tab': on_tab['top'] >= 0, 'caption_expanded': caption, 'state': st, **res,
+            'aria_archive_head': aria_archive[:900], 'errors': log['errors']}
 
 
 def main():

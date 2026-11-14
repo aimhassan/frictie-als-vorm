@@ -132,6 +132,31 @@ body {
   overflow: hidden;
 }
 
+/* De route naar de hele tekst, alleen voor toetsenbord en schermlezer. Wie scrolt, ziet hem niet:
+   het stuk dwingt je naar beneden, en de hele tekst staat pas na het einde. */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  padding: 10px 14px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--cream);
+  background: var(--void);
+  border-radius: 4px;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: none;
+  outline: 2px solid var(--ghost);
+  outline-offset: 2px;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -347,24 +372,6 @@ body.low .progress-label {
 
 .intro-more-link:hover {
   color: #444;
-}
-
-/* Zoals "Vertaling bekijken" onder een post: klein, grijs, altijd vindbaar. */
-.intro-route {
-  margin-top: 14px;
-}
-
-.route-link {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--platform-muted);
-  text-decoration: none;
-}
-
-.route-link:hover {
-  color: #444;
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 .scroll-indicator {
@@ -1184,8 +1191,7 @@ body.is-dark .intro-author {
 }
 
 body.is-dark .intro-meta,
-body.is-dark .intro-more-link,
-body.is-dark .route-link {
+body.is-dark .intro-more-link {
   color: var(--ash);
 }
 
